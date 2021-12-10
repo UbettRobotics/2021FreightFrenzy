@@ -75,30 +75,32 @@ public class BLUERight extends LinearOpMode{
                 .lineTo(new Vector2d(-36, 55))
                 .build();
 
-        drive.followTrajectory(inchForward);
-        drive.turn(Math.toRadians(-180));
-        drive.setPoseEstimate(new Pose2d(-36, 55, Math.toRadians(90)));
 
-        Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end().plus(new Pose2d(-36, 55, Math.toRadians(90))), true) //moves bot forward from start and turns
-                .strafeTo(new Vector2d(-36, 48))
+        Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end().plus(new Pose2d(-56, 55, Math.toRadians(270))), false) //moves bot forward from start and turns
+                .strafeTo(new Vector2d(-56, 55))
                 .build();
+
+
+        //Trajectory toPreDeliveryTurn = drive.trajectoryBuilder(drive.getPoseEstimate(), true) //moves bot forward from start and turns.lineTo(new Vector2d(-36, 48)).build();
+
+
+
+        //drive sequence code
+        drive.followTrajectory(inchForward);
+        drive.turn(Math.toRadians(90));
+        drive.turn(Math.toRadians(90));
+        drive.setPoseEstimate(new Pose2d(-36, 55, Math.toRadians(270)));
 
         drive.followTrajectory(toCarousel);
         tablemotor.setPower(0.5);
         sleep(2000);
         tablemotor.setPower(0);
 
-        Trajectory toPreDeliveryTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(-56, 55, Math.toRadians(90))), true) //moves bot forward from start and turns
-                .strafeTo(new Vector2d(-56, 55))
-                .build();
+        //drive.setPoseEstimate(new Pose2d(-56, 55, Math.toRadians(270)));
 
-        drive.followTrajectory(toPreDeliveryTurn);
-        drive.turn(Math.toRadians(90));
-        drive.setPoseEstimate(new Pose2d(-36, 55, Math.toRadians(0)));
-
-        //drive sequence code
-
-
+        //drive.followTrajectory(toPreDeliveryTurn);
+        //drive.turn(Math.toRadians(90));
+        //drive.setPoseEstimate(new Pose2d(-36, 55, Math.toRadians(0)));
 
 
         /*

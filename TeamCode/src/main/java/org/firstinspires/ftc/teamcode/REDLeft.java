@@ -106,8 +106,8 @@ public class REDLeft extends LinearOpMode {
         sleep(2500);
         tablemotor.setPower(0);
 
-        Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end())
-                .lineTo(new Vector2d(-41, -64))
+        Trajectory toTurn = drive.trajectoryBuilder(carouselAdjust.end())
+                .lineTo(new Vector2d(-50, -64))
                 .build();
         drive.followTrajectory(toTurn);
 
@@ -185,6 +185,10 @@ public class REDLeft extends LinearOpMode {
                     .lineTo(new Vector2d(-37, -57))
                     .build();
             drive.followTrajectory(align);
+
+            drive.turn(Math.toRadians(-177));
+            drive.setPoseEstimate(new Pose2d(-37,-57, Math.toRadians(180)));
+
             sprint = drive.trajectoryBuilder(align.end()) //Different start points
                     .lineTo(new Vector2d(-37, -137))
                     .build();

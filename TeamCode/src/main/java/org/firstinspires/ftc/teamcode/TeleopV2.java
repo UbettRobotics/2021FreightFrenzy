@@ -25,7 +25,7 @@ public class TeleopV2 extends LinearOpMode {
         int CurrentLevel = 0;
         final int LEVEL0 = 0;
         final int LEVEL1 = -800;
-        final int LEVEL2 = -1200;
+        final int LEVEL2 = -1350;
         final int LEVEL3 = -2050;
         Boolean tipped = false;
 
@@ -96,10 +96,10 @@ public class TeleopV2 extends LinearOpMode {
 
             //Trigger Turning
             else if (Math.abs(LTrigger1) > 0) {
-                SetPower(-.5 * LTrigger1, .5 * LTrigger1, -.5 * LTrigger1, .5 * LTrigger1); //.5
+                SetPower(-.25 * LTrigger1, .25 * LTrigger1, -.25 * LTrigger1, .25 * LTrigger1); //.25
             }
             else if (Math.abs(RTrigger1) > 0) {
-                SetPower(.5 * RTrigger1, -.5 * RTrigger1, .5 * RTrigger1, -.5 * RTrigger1); //.5
+                SetPower(.25 * RTrigger1, -.25 * RTrigger1, .25 * RTrigger1, -.25 * RTrigger1); //.25
             }
 
             else if (LBumper1) {
@@ -155,13 +155,14 @@ public class TeleopV2 extends LinearOpMode {
 
             //dump basket
             if (y2) {
-                basket.setPosition(.91);
+                basket.setPosition(.95);
                 tipped = true;
             } else if (x2) { //shared
                 basket.setPosition(.99);
                 tipped = true;
-            } else
-                {
+            } else if (b2){
+                basket.setPosition(.80);
+            }else {
                 basket.setPosition(.5);
                 if(CurrentLevel == LEVEL0 ){
                     tipped = false;
@@ -176,11 +177,11 @@ public class TeleopV2 extends LinearOpMode {
 
 
             // intake motor
-            if (a2){
-                RunIntake(-.7);
+            if (LTrigger2 > .05){
+                RunIntake(-1);
             }
-            else if(b2) {
-                RunIntake(.6);
+            else if(RTrigger2 > .05) {
+                RunIntake(1);
             }
             else{
                 RunIntake(0.0);
@@ -193,13 +194,14 @@ public class TeleopV2 extends LinearOpMode {
             else if(dpadLeft2){
                 CurrentLevel = LEVEL2;
             }
-            else if(dpadDOWN2){
+            else if(dpadDOWN2) {
                 CurrentLevel = LEVEL0;
-            }else if(dpadRight2){
-                CurrentLevel = LEVEL1;
             }
+            //}else if(dpadRight2){
+             //   CurrentLevel = LEVEL1;
+            //}
             //update linear slide position
-            RunSlide(CurrentLevel, .5);
+            RunSlide(CurrentLevel, 1);
 
 
             //telemetry/////////////////////////////////////////////////////////////////////////////
