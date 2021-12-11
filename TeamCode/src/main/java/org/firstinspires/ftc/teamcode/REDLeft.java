@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "RED Left", preselectTeleOp = "teleopV2")
+@Autonomous(name = "[-]RED Left:Barrier", preselectTeleOp = "teleopV2")
 public class REDLeft extends LinearOpMode {
 
     OpenCvCamera webcam;
@@ -26,6 +26,7 @@ public class REDLeft extends LinearOpMode {
     final int START_Y = -64;
     int level = 0;
     int height = 0;
+    double basket_value = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -56,6 +57,7 @@ public class REDLeft extends LinearOpMode {
             @Override
             public void onError(int errorCode) {
                 telemetry.addData("Error", errorCode);
+                telemetry.addData("Please restart the program", 0);
                 telemetry.update();
             }
         });
@@ -72,15 +74,18 @@ public class REDLeft extends LinearOpMode {
         switch(pipeline.getSide()) {
             case LEFT_SIDE:
                 level = 1;
-                height = 0;
+                height = -1350;
+                basket_value = 0.99;
                 break;
             case MIDDLE_SIDE:
                 level = 2;
-                height = -1100;
+                height = -1350;
+                basket_value = 0.95;
                 break;
             case RIGHT_SIDE:
                 level = 3;
-                height = -1980;
+                height = -2050;
+                basket_value = 0.95;
 
         }
         Trajectory forward = drive.trajectoryBuilder(startPose) //Different start points
@@ -98,7 +103,7 @@ public class REDLeft extends LinearOpMode {
         drive.setPoseEstimate(new Pose2d(-30,-5, Math.toRadians(180)));
 
         Trajectory carouselAdjust = drive.trajectoryBuilder(toCarousel.end()) //Different start points
-                .lineTo(new Vector2d(-38, 0))
+                .lineTo(new Vector2d(-40, 0))
                 .build();
         drive.followTrajectory(carouselAdjust);
 
@@ -107,24 +112,24 @@ public class REDLeft extends LinearOpMode {
         tablemotor.setPower(0);
 
         Trajectory toTurn = drive.trajectoryBuilder(carouselAdjust.end())
-                .lineTo(new Vector2d(-50, -64))
+                .lineTo(new Vector2d(-28, -50))
                 .build();
         drive.followTrajectory(toTurn);
 
-        drive.turn(Math.toRadians(-170));
+        drive.turn(Math.toRadians(-160));
 
-        drive.setPoseEstimate(new Pose2d(-26,-64, Math.toRadians(0)));
+        drive.setPoseEstimate(new Pose2d(-28,-50, Math.toRadians(0)));
         //CHANGE ORIENT
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .lineTo(new Vector2d(-46, -53))
+                .lineTo(new Vector2d(-35, -43))
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .lineTo(new Vector2d(-44.5, -53))
+                .lineTo(new Vector2d(-40, -43))
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .lineTo(new Vector2d(-44.25, -53))
+                .lineTo(new Vector2d(-35, -43))
                 .build();
 
         if(level == 1) {
@@ -142,14 +147,15 @@ public class REDLeft extends LinearOpMode {
         slide.setPower(0.6);
         while(slide.isBusy()){}
 
-        basket.setPosition(0.93);
+        basket.setPosition(basket_value);
         sleep(4000);
-        basket.setPosition(0.48);
+        basket.setPosition(0.5);
 
         slide.setTargetPosition(0);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slide.setPower(0.6);
 
+        stop();
         Trajectory align;
         Trajectory sprint;
         if(level == 1) {

@@ -20,13 +20,14 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "BLUE Right", preselectTeleOp = "teleopV2")
+@Autonomous(name = "<->BLUE Right:Barrier", preselectTeleOp = "teleopV2")
 public class BLUERight extends LinearOpMode{
     OpenCvCamera webcam;
     final int START_X = -36;
     final int START_Y = 64;
     int level = 0;
     int height = 0;
+    double basket_value = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,7 +46,7 @@ public class BLUERight extends LinearOpMode{
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
 
-        /*
+
         ConeVisionPipeline pipeline = new ConeVisionPipeline(telemetry);
         webcam.setPipeline(pipeline);
 
@@ -58,81 +59,88 @@ public class BLUERight extends LinearOpMode{
             @Override
             public void onError(int errorCode) {
                 telemetry.addData("Error", errorCode);
+                telemetry.addData("Please restart the program", 0);
                 telemetry.update();
             }
         });
-         */
 
 ////////Program start////////////////////////////////////////////////////////////////////////
 
         waitForStart();
         ////Move on start/init
-        //basket.setPosition(0.48);
+        basket.setPosition(0.5);
         ////
+        telemetry.addData("location: ", pipeline.getSide());
+        telemetry.update();
+        switch(pipeline.getSide()) {
+            case LEFT_SIDE:
+                level = 1;
+                height = -1350;
+                basket_value = 0.99;
+                break;
+            case MIDDLE_SIDE:
+                level = 2;
+                height = -1350;
+                basket_value = 0.95;
+                break;
+            case RIGHT_SIDE:
+                level = 3;
+                height = -2050;
+                basket_value = 0.95;
 
-        telemetry.addData("No Camera", 1);
+        }
+
         Trajectory inchForward = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
                 .lineTo(new Vector2d(-36, 55))
                 .build();
 
 
-        Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end().plus(new Pose2d(-56, 55, Math.toRadians(270))), false) //moves bot forward from start and turns
-                .strafeTo(new Vector2d(-56, 55))
+        Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end().plus(new Pose2d(-36, 55, Math.toRadians(270))), false) //moves bot forward from start and turns
+                .strafeTo(new Vector2d(-55, 55))
+                .build();
+        Trajectory carouselAdjust = drive.trajectoryBuilder(toCarousel.end(), false) //To Carousel
+                .lineTo(new Vector2d(-62, 58))
                 .build();
 
 
-        //Trajectory toPreDeliveryTurn = drive.trajectoryBuilder(drive.getPoseEstimate(), true) //moves bot forward from start and turns.lineTo(new Vector2d(-36, 48)).build();
+        Trajectory toTurn = drive.trajectoryBuilder(carouselAdjust.end(), true) //To turn next to shipping hub
+                .strafeTo(new Vector2d(-58, 115))
+                .build();
+
 
 
 
         //drive sequence code
         drive.followTrajectory(inchForward);
-        drive.turn(Math.toRadians(90));
-        drive.turn(Math.toRadians(90));
+        drive.turn(Math.toRadians(83));
+        drive.turn(Math.toRadians(80));
         drive.setPoseEstimate(new Pose2d(-36, 55, Math.toRadians(270)));
 
+
         drive.followTrajectory(toCarousel);
-        tablemotor.setPower(0.5);
-        sleep(2000);
-        tablemotor.setPower(0);
+        drive.setPoseEstimate(new Pose2d(-51, 50, Math.toRadians(270)));
 
-        //drive.setPoseEstimate(new Pose2d(-56, 55, Math.toRadians(270)));
-
-        //drive.followTrajectory(toPreDeliveryTurn);
-        //drive.turn(Math.toRadians(90));
-        //drive.setPoseEstimate(new Pose2d(-36, 55, Math.toRadians(0)));
-
-
-        /*
-        drive.followTrajectory(inchForward);
-        drive.turn(Math.toRadians(30));
-        //drive.setPoseEstimate(new Pose2d(-64,46, Math.toRadians(180)));
-
-        Trajectory carouselAdj  ust = drive.trajectoryBuilder(toCarousel.end()) //Different start points
-                .lineTo(new Vector2d(-70.5,43))
-                .build();
         drive.followTrajectory(carouselAdjust);
+        drive.setPoseEstimate(new Pose2d(-62, 55, Math.toRadians(270)));
 
         tablemotor.setPower(0.5);
         sleep(2000);
         tablemotor.setPower(0);
-        drive.setPoseEstimate(new Pose2d(-70.5,43, Math.toRadians(90)));
 
-        Trajectory toTurn = drive.trajectoryBuilder(carouselAdjust.end())
-                .lineTo(new Vector2d(-84.5, 8))
-                .build();
         drive.followTrajectory(toTurn);
-        drive.turn(Math.toRadians(-90));
-        drive.setPoseEstimate(new Pose2d(-84.5,13,Math.toRadians(180)));
+
+        drive.turn(Math.toRadians(-65));
+        drive.setPoseEstimate(new Pose2d(-48, 120, Math.toRadians(0)));
+
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .lineTo(new Vector2d(-70, 0))
+                .lineTo(new Vector2d(-50, 95))
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .lineTo(new Vector2d(-70, 0))
+                .lineTo(new Vector2d(-50, 95))
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .lineTo(new Vector2d(-70, 0))
+                .lineTo(new Vector2d(-50, 89.5))
                 .build();
 
         if(level == 1) {
@@ -150,47 +158,42 @@ public class BLUERight extends LinearOpMode{
         slide.setPower(0.6);
         while(slide.isBusy()){}
 
-        basket.setPosition(0.04);
-        sleep(4000);
-        basket.setPosition(0.48);
+        basket.setPosition(basket_value);
+        sleep(3000);
+        basket.setPosition(0.5);
 
         slide.setTargetPosition(0);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slide.setPower(0.6);
+
+        drive.turn(Math.toRadians(-10));
+
+
         Trajectory parkStorage;
         Trajectory parkStorage2;
         if(level == 1) {
             parkStorage = drive.trajectoryBuilder(toShippingHub2Short.end()) //Different start points
-                    .lineTo(new Vector2d(-95, -5)) // 15
+                    .forward(90)
                     .build();
             drive.followTrajectory(parkStorage);
-            parkStorage2 = drive.trajectoryBuilder(parkStorage.end()) //Different start points
-                    .lineTo(new Vector2d(-105, 26))
-                    .build();
-            drive.followTrajectory(parkStorage2);
+
         } else if(level == 2) {
             parkStorage = drive.trajectoryBuilder(toShippingHub2Middle.end()) //Different start points
-                    .lineTo(new Vector2d(-95, -5)) // 30
+                    .forward(90)
                     .build();
             drive.followTrajectory(parkStorage);
-            parkStorage2 = drive.trajectoryBuilder(parkStorage.end()) //Different start points
-                    .lineTo(new Vector2d(-105, 26))
-                    .build();
-            drive.followTrajectory(parkStorage2);
+
         } else {
             parkStorage = drive.trajectoryBuilder(toShippingHub2Long.end()) //Different start points
-                    .lineTo(new Vector2d(-95, -5)) // 25
+                    .forward(90)
                     .build();
             drive.followTrajectory(parkStorage);
-            parkStorage2 = drive.trajectoryBuilder(parkStorage.end()) //Different start points
-                    .lineTo(new Vector2d(-105, 26))
-                    .build();
-            drive.followTrajectory(parkStorage2);
+
         }
 
         if (isStopRequested()) return;
         sleep(2000);
-         */
+
 
     }
 }
