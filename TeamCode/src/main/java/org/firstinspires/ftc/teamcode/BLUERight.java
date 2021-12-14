@@ -99,7 +99,7 @@ public class BLUERight extends LinearOpMode{
                 .strafeTo(new Vector2d(-55, 55))
                 .build();
         Trajectory carouselAdjust = drive.trajectoryBuilder(toCarousel.end(), false) //To Carousel
-                .lineTo(new Vector2d(-62, 58))
+                .lineTo(new Vector2d(-65, 58))
                 .build();
 
 
@@ -134,13 +134,13 @@ public class BLUERight extends LinearOpMode{
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .lineTo(new Vector2d(-50, 95))
+                .lineTo(new Vector2d(-51, 105))
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .lineTo(new Vector2d(-50, 95))
+                .lineTo(new Vector2d(-51, 110))
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .lineTo(new Vector2d(-50, 89.5))
+                .lineTo(new Vector2d(-51, 110))
                 .build();
 
         if(level == 1) {

@@ -174,6 +174,7 @@ public class TeleopV2 extends LinearOpMode {
                 }
             }
 
+            //linear slide is screwed up buttons
 
 
             // intake motor
@@ -196,13 +197,15 @@ public class TeleopV2 extends LinearOpMode {
             }
             else if(dpadDOWN2) {
                 CurrentLevel = LEVEL0;
+            }else if(a1 && a2 && b1){
+                CurrentLevel = 5;
             }
-            //}else if(dpadRight2){
-             //   CurrentLevel = LEVEL1;
-            //}
             //update linear slide position
             RunSlide(CurrentLevel, 1);
 
+            if(a1 && a2 && b1){
+                slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
 
             //telemetry/////////////////////////////////////////////////////////////////////////////
             telemetry.addData("ECV", slide.getCurrentPosition());
