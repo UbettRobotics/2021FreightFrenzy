@@ -1,18 +1,24 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.Robot.RunIntake;
+import static org.firstinspires.ftc.teamcode.Robot.RunSlide;
+import static org.firstinspires.ftc.teamcode.Robot.SetPower;
+import static org.firstinspires.ftc.teamcode.Robot.basket;
+import static org.firstinspires.ftc.teamcode.Robot.imu;
+import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
+import static org.firstinspires.ftc.teamcode.Robot.initIMU;
+import static org.firstinspires.ftc.teamcode.Robot.initMotors;
+import static org.firstinspires.ftc.teamcode.Robot.slide;
+import static org.firstinspires.ftc.teamcode.Robot.tablemotor;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import static org.firstinspires.ftc.teamcode.Robot.*;
-import static org.firstinspires.ftc.teamcode.Robot.RunIntake;
-import static org.firstinspires.ftc.teamcode.Robot.RunSlide;
-import static org.firstinspires.ftc.teamcode.Robot.basket;
-import static org.firstinspires.ftc.teamcode.Robot.slide;
-import static org.firstinspires.ftc.teamcode.Robot.tablemotor;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@TeleOp(name = "teleopV2")
-public class TeleopV2 extends LinearOpMode {
+@TeleOp(name = "teleopV3 FC")
+public class TeleopV3 extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -73,6 +79,33 @@ public class TeleopV2 extends LinearOpMode {
 
             //diagonal driving
             if (Math.abs(LStickX) > 0 || Math.abs(LStickY) > 0 || Math.abs(RStickX) > 0) {
+                Orientation angles = imu.getAngularOrientation();
+                double heading = angles.firstAngle;
+                double AdjustmentS = Math.round(Math.sin(Math.toRadians(Math.abs(heading)))*100.0) / 100.0;
+                double AdjustmentC = Math.round(Math.cos(Math.toRadians(Math.abs(heading)))*100.0) / 100.0;
+                double sign = Math.signum(heading);
+                //Prevent Sign from being 0
+                if (sign == 0 || sign == -0) {
+                    sign = 1;
+                }
+
+
+                //double FWD = LStickY * AdjustmentC * sign;
+                //double STR = LStickX * AdjustmentS * sign;
+
+                double FWD = LStickY * AdjustmentC + LStickX * AdjustmentS;
+                double STR = LStickX * AdjustmentC - LStickY * AdjustmentS;
+
+                SetPower((FWD - STR + RStickX),(FWD - STR - RStickX),(FWD + STR + RStickX),(FWD + STR - RStickX));
+
+                telemetry.addData("IMU", imu.getAngularOrientation());
+                telemetry.addData("FWD",FWD);
+                telemetry.addData("LSTICKY",LStickY);
+                telemetry.addData("ADJc",AdjustmentC);
+                telemetry.addData("ADJs", AdjustmentS);
+                telemetry.addData("SIGN",sign);
+                telemetry.update();
+                /*
                 if (Math.abs(LStickX) < .05 && Math.abs(RStickX) < .05) {
                     SetPower(LStickY, LStickY, LStickY, LStickY);
                 }
@@ -92,7 +125,9 @@ public class TeleopV2 extends LinearOpMode {
 
                     SetPower(v1, v2, v3, v4);
                 }
+                */
             }
+
 
             //Trigger Turning
             else if (Math.abs(LTrigger1) > 0) {
@@ -114,6 +149,7 @@ public class TeleopV2 extends LinearOpMode {
 
 
             //driving
+            /*
             if (Math.abs(LStickY) > 0) {
                 SetPower(LStickY, LStickY, LStickY, LStickY);
             }
@@ -140,6 +176,7 @@ public class TeleopV2 extends LinearOpMode {
             else if(dpadDown1){
                 SetPower(.3, .3, .3, .3);
             }
+             */
 
 
             //carousel
@@ -174,6 +211,8 @@ public class TeleopV2 extends LinearOpMode {
                 }
             }
 
+            //linear slide is screwed up buttons
+
 
             // intake motor
             if (LTrigger2 > .05){
@@ -206,6 +245,7 @@ public class TeleopV2 extends LinearOpMode {
             }
 
             //telemetry/////////////////////////////////////////////////////////////////////////////
+            /*
             telemetry.addData("ECV", slide.getCurrentPosition());
             telemetry.addData("Target",CurrentLevel);
             telemetry.addData("IMU", imu.getAngularOrientation());
@@ -214,6 +254,7 @@ public class TeleopV2 extends LinearOpMode {
             telemetry.addData("Z", imu.getAngularVelocity().zRotationRate);
 
             telemetry.update();
+             */
 
 
 
