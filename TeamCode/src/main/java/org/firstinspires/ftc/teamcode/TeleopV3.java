@@ -11,6 +11,7 @@ import static org.firstinspires.ftc.teamcode.Robot.initMotors;
 import static org.firstinspires.ftc.teamcode.Robot.slide;
 import static org.firstinspires.ftc.teamcode.Robot.tablemotor;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;

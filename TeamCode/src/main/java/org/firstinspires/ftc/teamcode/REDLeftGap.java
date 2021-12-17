@@ -19,7 +19,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "[-]RED Left:Gap", preselectTeleOp = "teleopV2")
-public class REDLeft extends LinearOpMode {
+public class REDLeftGap extends LinearOpMode {
 
     OpenCvCamera webcam;
     final int START_X = -36;
@@ -74,8 +74,8 @@ public class REDLeft extends LinearOpMode {
         switch(pipeline.getSide()) {
             case LEFT_SIDE:
                 level = 1;
-                height = -1350;
-                basket_value = 0.99;
+                height = 0;
+                basket_value = 0.95;
                 break;
             case MIDDLE_SIDE:
                 level = 2;
@@ -92,18 +92,18 @@ public class REDLeft extends LinearOpMode {
                 .lineTo(new Vector2d(-36, -49))
                 .build();
         drive.followTrajectory(forward);
-        drive.turn(Math.toRadians(-87));
+        drive.turn(Math.toRadians(-85));
         drive.setPoseEstimate(new Pose2d(-36,-49, Math.toRadians(180)));
         //CHANGE ORIENT
 
         Trajectory toCarousel = drive.trajectoryBuilder(forward.end()) //Different start points
-                .lineTo(new Vector2d(-30, -5))
+                .lineTo(new Vector2d(-30, -20))
                 .build();
         drive.followTrajectory(toCarousel);
-        drive.setPoseEstimate(new Pose2d(-30,-5, Math.toRadians(180)));
+        drive.setPoseEstimate(new Pose2d(-30,-20, Math.toRadians(180)));
 
         Trajectory carouselAdjust = drive.trajectoryBuilder(toCarousel.end()) //Different start points
-                .lineTo(new Vector2d(-40, 0))
+                .lineTo(new Vector2d(-48, -15))
                 .build();
         drive.followTrajectory(carouselAdjust);
 
@@ -112,24 +112,24 @@ public class REDLeft extends LinearOpMode {
         tablemotor.setPower(0);
 
         Trajectory toTurn = drive.trajectoryBuilder(carouselAdjust.end())
-                .lineTo(new Vector2d(-28, -50))
+                .lineTo(new Vector2d(-36, -70))
                 .build();
         drive.followTrajectory(toTurn);
 
         drive.turn(Math.toRadians(-160));
 
-        drive.setPoseEstimate(new Pose2d(-28,-50, Math.toRadians(0)));
+        drive.setPoseEstimate(new Pose2d(-36,-70, Math.toRadians(0)));
         //CHANGE ORIENT
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .lineTo(new Vector2d(-35, -43))
+                .lineTo(new Vector2d(-50, -70))
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .lineTo(new Vector2d(-40, -43))
+                .lineTo(new Vector2d(-52, -70))
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .lineTo(new Vector2d(-35, -43))
+                .lineTo(new Vector2d(-55.5, -70))
                 .build();
 
         if(level == 1) {
@@ -160,44 +160,44 @@ public class REDLeft extends LinearOpMode {
         Trajectory sprint;
         if(level == 1) {
             align = drive.trajectoryBuilder(toShippingHub2Middle.end()) //Different start points
-                    .lineTo(new Vector2d(0, -55))
+                    .lineTo(new Vector2d(-15, -70))
                     .build();
             drive.followTrajectory(align);
 
             //CHNGE ORIENT
-            drive.turn(Math.toRadians(30));
-            drive.setPoseEstimate(new Pose2d(0,-43, Math.toRadians(0)));
+            drive.turn(Math.toRadians(5));
+            drive.setPoseEstimate(new Pose2d(-15,-70, Math.toRadians(0)));
 
             sprint = drive.trajectoryBuilder(align.end()) //Different start points
-                    .lineTo(new Vector2d(-37, 20))
+                    .lineTo(new Vector2d(-15, -20))
                     .build();
             drive.followTrajectory(sprint);
         } else if(level == 2) {
             align= drive.trajectoryBuilder(toShippingHub2Middle.end()) //Different start points
-                    .lineTo(new Vector2d(0, -55))
+                    .lineTo(new Vector2d(-15, -70))
                     .build();
             drive.followTrajectory(align);
 
             //CHNGE ORIENT
-            drive.turn(Math.toRadians(30));
+            drive.turn(Math.toRadians(5));
 
-            drive.setPoseEstimate(new Pose2d(0,-55, Math.toRadians(0)));
+            drive.setPoseEstimate(new Pose2d(-15,-70, Math.toRadians(0)));
 
-            sprint = drive.trajectoryBuilder(align.end()) //Different start points
-                    .lineTo(new Vector2d(-37, 20))
+            sprint = drive.trajectoryBuilder(align.end())
+                    .lineTo(new Vector2d(-15, -20))
                     .build();
             drive.followTrajectory(sprint);
         } else {
             align = drive.trajectoryBuilder(toShippingHub2Long.end()) //Different start points
-                    .lineTo(new Vector2d(0, -55))
+                    .lineTo(new Vector2d(-15, -70))
                     .build();
             drive.followTrajectory(align);
 
-            drive.turn(Math.toRadians(30));
-            drive.setPoseEstimate(new Pose2d(0,-55, Math.toRadians(0)));
+            drive.turn(Math.toRadians(5));
+            drive.setPoseEstimate(new Pose2d(-15,-70, Math.toRadians(0)));
 
             sprint = drive.trajectoryBuilder(align.end()) //Different start points
-                    .lineTo(new Vector2d(-37, 20))
+                    .lineTo(new Vector2d(-15, -20))
                     .build();
             drive.followTrajectory(sprint);
         }
