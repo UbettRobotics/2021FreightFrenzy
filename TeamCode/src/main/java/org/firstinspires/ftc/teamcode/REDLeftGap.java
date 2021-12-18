@@ -92,7 +92,7 @@ public class REDLeftGap extends LinearOpMode {
                 .lineTo(new Vector2d(-36, -49))
                 .build();
         drive.followTrajectory(forward);
-        drive.turn(Math.toRadians(-85));
+        drive.turn(Math.toRadians(-82));
         drive.setPoseEstimate(new Pose2d(-36,-49, Math.toRadians(180)));
         //CHANGE ORIENT
 
@@ -116,14 +116,14 @@ public class REDLeftGap extends LinearOpMode {
                 .build();
         drive.followTrajectory(toTurn);
 
-        drive.turn(Math.toRadians(-160));
+        drive.turn(Math.toRadians(-170));
 
         drive.setPoseEstimate(new Pose2d(-36,-70, Math.toRadians(0)));
         //CHANGE ORIENT
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .lineTo(new Vector2d(-50, -70))
+                .lineTo(new Vector2d(-52, -72))
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
                 .lineTo(new Vector2d(-52, -70))
@@ -160,7 +160,7 @@ public class REDLeftGap extends LinearOpMode {
         Trajectory sprint;
         if(level == 1) {
             align = drive.trajectoryBuilder(toShippingHub2Middle.end()) //Different start points
-                    .lineTo(new Vector2d(-15, -70))
+                    .lineTo(new Vector2d(-20, -70))
                     .build();
             drive.followTrajectory(align);
 
@@ -169,7 +169,7 @@ public class REDLeftGap extends LinearOpMode {
             drive.setPoseEstimate(new Pose2d(-15,-70, Math.toRadians(0)));
 
             sprint = drive.trajectoryBuilder(align.end()) //Different start points
-                    .lineTo(new Vector2d(-15, -20))
+                    .lineTo(new Vector2d(-15, -10))
                     .build();
             drive.followTrajectory(sprint);
         } else if(level == 2) {
@@ -184,7 +184,7 @@ public class REDLeftGap extends LinearOpMode {
             drive.setPoseEstimate(new Pose2d(-15,-70, Math.toRadians(0)));
 
             sprint = drive.trajectoryBuilder(align.end())
-                    .lineTo(new Vector2d(-15, -20))
+                    .lineTo(new Vector2d(-15, -10))
                     .build();
             drive.followTrajectory(sprint);
         } else {
@@ -197,7 +197,7 @@ public class REDLeftGap extends LinearOpMode {
             drive.setPoseEstimate(new Pose2d(-15,-70, Math.toRadians(0)));
 
             sprint = drive.trajectoryBuilder(align.end()) //Different start points
-                    .lineTo(new Vector2d(-15, -20))
+                    .lineTo(new Vector2d(-15, -10))
                     .build();
             drive.followTrajectory(sprint);
         }

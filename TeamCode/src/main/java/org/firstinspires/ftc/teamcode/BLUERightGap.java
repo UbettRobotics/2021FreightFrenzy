@@ -22,8 +22,8 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 
-@Autonomous(name = "<->BLUE Right:Barrier", preselectTeleOp = "teleopV2")
-public class BLUERight extends LinearOpMode{
+@Autonomous(name = "<->BLUE Right:Gap", preselectTeleOp = "teleopV2")
+public class BLUERightGap extends LinearOpMode{
     OpenCvCamera webcam;
     final int START_X = -36;
     final int START_Y = 64;
@@ -77,8 +77,8 @@ public class BLUERight extends LinearOpMode{
         switch(pipeline.getSide()) {
             case LEFT_SIDE:
                 level = 1;
-                height = -1350;
-                basket_value = 0.99;
+                height = 0;
+                basket_value = 0.94;
                 break;
             case MIDDLE_SIDE:
                 level = 2;
@@ -88,7 +88,7 @@ public class BLUERight extends LinearOpMode{
             case RIGHT_SIDE:
                 level = 3;
                 height = -2050;
-                basket_value = 0.95;
+                basket_value = 0.93;
 
         }
 
@@ -98,15 +98,15 @@ public class BLUERight extends LinearOpMode{
 
 
         Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end().plus(new Pose2d(-36, 55, Math.toRadians(270))), false) //moves bot forward from start and turns
-                .strafeTo(new Vector2d(-55, 55))
+                .strafeTo(new Vector2d(-60, 61))//+X is -Y, +Y is +X
                 .build();
         Trajectory carouselAdjust = drive.trajectoryBuilder(toCarousel.end(), false) //To Carousel
-                .lineTo(new Vector2d(-65, 58))
+                .lineTo(new Vector2d(-72, 62))
                 .build();
 
 
         Trajectory toTurn = drive.trajectoryBuilder(carouselAdjust.end(), true) //To turn next to shipping hub
-                .strafeTo(new Vector2d(-58, 115))
+                .strafeTo(new Vector2d(-70, 130))
                 .build();
 
 
@@ -120,10 +120,10 @@ public class BLUERight extends LinearOpMode{
 
 
         drive.followTrajectory(toCarousel);
-        drive.setPoseEstimate(new Pose2d(-51, 50, Math.toRadians(270)));
+        drive.setPoseEstimate(new Pose2d(-60, 61, Math.toRadians(270)));
 
         drive.followTrajectory(carouselAdjust);
-        drive.setPoseEstimate(new Pose2d(-62, 55, Math.toRadians(270)));
+        drive.setPoseEstimate(new Pose2d(-72, 62, Math.toRadians(270)));
 
         tablemotor.setPower(0.5);
         sleep(2000);
@@ -131,18 +131,18 @@ public class BLUERight extends LinearOpMode{
 
         drive.followTrajectory(toTurn);
 
-        drive.turn(Math.toRadians(-65));
-        drive.setPoseEstimate(new Pose2d(-48, 120, Math.toRadians(0)));
+        drive.turn(Math.toRadians(-70));
+        drive.setPoseEstimate(new Pose2d(-70, 130, Math.toRadians(0)));
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .lineTo(new Vector2d(-51, 105))
+                .lineTo(new Vector2d(-72, 105))
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .lineTo(new Vector2d(-51, 110))
+                .lineTo(new Vector2d(-74, 105))
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .lineTo(new Vector2d(-51, 110))
+                .lineTo(new Vector2d(-72, 104))
                 .build();
 
         if(level == 1) {
@@ -168,29 +168,40 @@ public class BLUERight extends LinearOpMode{
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slide.setPower(0.6);
 
-        drive.turn(Math.toRadians(-10));
+        //drive.turn(Math.toRadians(-10));
 
 
-        Trajectory parkStorage;
-        Trajectory parkStorage2;
+        Trajectory align;
+        Trajectory sprint;
         if(level == 1) {
-            parkStorage = drive.trajectoryBuilder(toShippingHub2Short.end()) //Different start points
-                    .forward(90)
+            align = drive.trajectoryBuilder(toShippingHub2Short.end())
+                    .lineTo(new Vector2d(-65,150))
                     .build();
-            drive.followTrajectory(parkStorage);
+            drive.followTrajectory(align);
+            sprint = drive.trajectoryBuilder(align.end()) //Different start points
+                    .forward(70)
+                    .build();
+            drive.followTrajectory(sprint);
 
         } else if(level == 2) {
-            parkStorage = drive.trajectoryBuilder(toShippingHub2Middle.end()) //Different start points
-                    .forward(90)
+            align = drive.trajectoryBuilder(toShippingHub2Middle.end())
+                    .lineTo(new Vector2d(-65,150))
                     .build();
-            drive.followTrajectory(parkStorage);
+            drive.followTrajectory(align);
+            sprint = drive.trajectoryBuilder(align.end()) //Different start points
+                    .forward(70)
+                    .build();
+            drive.followTrajectory(sprint);
 
         } else {
-            parkStorage = drive.trajectoryBuilder(toShippingHub2Long.end()) //Different start points
-                    .forward(90)
+            align = drive.trajectoryBuilder(toShippingHub2Long.end())
+                    .lineTo(new Vector2d(-65,140))
                     .build();
-            drive.followTrajectory(parkStorage);
-
+            drive.followTrajectory(align);
+            sprint = drive.trajectoryBuilder(align.end()) //Different start points
+                    .forward(70)
+                    .build();
+            drive.followTrajectory(sprint);
         }
 
         if (isStopRequested()) return;
