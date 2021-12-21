@@ -129,7 +129,7 @@ public class REDLeftGap extends LinearOpMode {
                 .lineTo(new Vector2d(-52, -70))
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .lineTo(new Vector2d(-55.5, -70))
+                .lineTo(new Vector2d(-55.5, -72))
                 .build();
 
         if(level == 1) {
@@ -166,7 +166,7 @@ public class REDLeftGap extends LinearOpMode {
 
             //CHNGE ORIENT
             drive.turn(Math.toRadians(5));
-            drive.setPoseEstimate(new Pose2d(-15,-70, Math.toRadians(0)));
+            drive.setPoseEstimate(new Pose2d(-20,-70, Math.toRadians(0)));
 
             sprint = drive.trajectoryBuilder(align.end()) //Different start points
                     .lineTo(new Vector2d(-15, -10))
