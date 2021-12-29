@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -35,7 +37,9 @@ public class Robot {
     static Servo basket;
     static BNO055IMU imu;
     static Orientation lastAngles = new Orientation();
+    static DistanceSensor distance;
     static double globalAngle, correction;
+    static DistanceUnit cm = DistanceUnit.CM;
 
 
 
@@ -49,6 +53,7 @@ public class Robot {
         frontintake = opMode.hardwareMap.get(DcMotor.class, "frontintake");
         slide = opMode.hardwareMap.get(DcMotor.class,"slide");
         basket = opMode.hardwareMap.servo.get("basket");
+        distance = opMode.hardwareMap.get(DistanceSensor.class, "distance");
 
 
 
