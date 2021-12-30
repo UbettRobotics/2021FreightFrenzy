@@ -81,31 +81,7 @@ public class TeleopV3 extends LinearOpMode {
             //diagonal driving
             if (Math.abs(LStickX) > 0 || Math.abs(LStickY) > 0 || Math.abs(RStickX) > 0) {
                 Orientation angles = imu.getAngularOrientation();
-                double heading = angles.firstAngle;
-                double AdjustmentS = Math.round(Math.sin(Math.toRadians(Math.abs(heading)))*100.0) / 100.0;
-                double AdjustmentC = Math.round(Math.cos(Math.toRadians(Math.abs(heading)))*100.0) / 100.0;
-                double sign = Math.signum(heading);
-                //Prevent Sign from being 0
-                if (sign == 0 || sign == -0) {
-                    sign = 1;
-                }
-
-
-                //double FWD = LStickY * AdjustmentC * sign;
-                //double STR = LStickX * AdjustmentS * sign;
-
-                double FWD = LStickY * AdjustmentC + LStickX * AdjustmentS;
-                double STR = LStickX * AdjustmentC - LStickY * AdjustmentS;
-
-                SetPower((FWD - STR + RStickX),(FWD - STR - RStickX),(FWD + STR + RStickX),(FWD + STR - RStickX));
-
-                telemetry.addData("IMU", imu.getAngularOrientation());
-                telemetry.addData("FWD",FWD);
-                telemetry.addData("LSTICKY",LStickY);
-                telemetry.addData("ADJc",AdjustmentC);
-                telemetry.addData("ADJs", AdjustmentS);
-                telemetry.addData("SIGN",sign);
-                telemetry.update();
+                double rotation = Math.toRadians(angles.firstAngle);
                 /*
                 if (Math.abs(LStickX) < .05 && Math.abs(RStickX) < .05) {
                     SetPower(LStickY, LStickY, LStickY, LStickY);
@@ -113,10 +89,13 @@ public class TeleopV3 extends LinearOpMode {
                 else if (Math.abs(LStickY) < .05 && Math.abs(RStickX) < .05) {
                     SetPower(LStickX, -LStickX, -LStickX, LStickX);//+--+
                 }
-                else {
-                    imu.getAngularOrientation();
-                    double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-                    double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
+                */
+
+                double newX = -LStickX*Math.cos(rotation) + -LStickY*Math.sin(rotation); //Angle Difference Identity
+                double newY = LStickY*Math.cos(rotation) - LStickX*Math.sin(rotation); //Trigonometry
+
+                double r = Math.hypot(newX, newY);
+                    double robotAngle = Math.atan2(newY, newX) - Math.PI / 4;
                     double rightX = -gamepad1.right_stick_x;
 
                     double v1 = r * Math.cos(robotAngle) + rightX; //lf
@@ -125,8 +104,6 @@ public class TeleopV3 extends LinearOpMode {
                     double v4 = r * Math.cos(robotAngle) - rightX; //rb
 
                     SetPower(v1, v2, v3, v4);
-                }
-                */
             }
 
 
