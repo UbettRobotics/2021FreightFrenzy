@@ -69,7 +69,7 @@ public class CameraTest extends LinearOpMode {
             @Override
             public void onOpened()
             {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming( 320, 240, OpenCvCameraRotation.UPRIGHT); //320, 240
             }
 
             @Override

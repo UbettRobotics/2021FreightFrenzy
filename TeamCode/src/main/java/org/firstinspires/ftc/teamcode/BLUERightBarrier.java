@@ -43,7 +43,7 @@ public class BLUERightBarrier extends LinearOpMode{
         drive.setPoseEstimate(startPose);
 
         //////Start Camera Streaming//////
-        /*
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
 
@@ -64,7 +64,6 @@ public class BLUERightBarrier extends LinearOpMode{
                 telemetry.update();
             }
         });
-         */
 
 ////////Program start////////////////////////////////////////////////////////////////////////
 
@@ -72,7 +71,7 @@ public class BLUERightBarrier extends LinearOpMode{
         ////Move on start/init
         basket.setPosition(0.5);
         ////
-        /*
+
         telemetry.addData("location: ", pipeline.getSide());
         telemetry.update();
         switch(pipeline.getSide()) {
@@ -92,26 +91,17 @@ public class BLUERightBarrier extends LinearOpMode{
                 basket_value = 0.93;
 
         }
-
-         */
-        level = 3;
-        height = -2050;
-        basket_value = 0.93;
         Trajectory inchForward = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
-                .lineTo(new Vector2d(-36, 55))
+                .strafeTo(new Vector2d(-36, 55))
+                .build();
+
+        Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end()) //moves bot forward from start and turns
+                .lineToLinearHeading(new Pose2d(-10, 62.5,Math.toRadians(-55)))//to -90
                 .build();
 
 
-        Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end().plus(new Pose2d(-36, 55, Math.toRadians(270))), false) //moves bot forward from start and turns
-                .strafeTo(new Vector2d(-60, 61))//+X is -Y, +Y is +X
-                .build();
-        Trajectory carouselAdjust = drive.trajectoryBuilder(toCarousel.end(), false) //To Carousel
-                .lineTo(new Vector2d(-78, 62))
-                .build();
-
-
-        Trajectory toTurn = drive.trajectoryBuilder(carouselAdjust.end(), true) //To turn next to shipping hub
-                .strafeTo(new Vector2d(-70, 130))
+        Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-35))), true) //To turn next to shipping hub
+                .lineToLinearHeading(new Pose2d(-50, 70,Math.toRadians(-179)))//to -180
                 .build();
 
 
@@ -119,25 +109,15 @@ public class BLUERightBarrier extends LinearOpMode{
 
         //drive sequence code
         drive.followTrajectory(inchForward);
-        drive.turn(Math.toRadians(83));
-        drive.turn(Math.toRadians(80));
-        drive.setPoseEstimate(new Pose2d(-36, 55, Math.toRadians(270)));
-
 
         drive.followTrajectory(toCarousel);
-        drive.setPoseEstimate(new Pose2d(-60, 61, Math.toRadians(270)));
-
-        drive.followTrajectory(carouselAdjust);
-        drive.setPoseEstimate(new Pose2d(-72, 62, Math.toRadians(270)));
 
         tablemotor.setPower(0.5);
         sleep(2000);
         tablemotor.setPower(0);
 
         drive.followTrajectory(toTurn);
-
-        drive.turn(Math.toRadians(-70));
-        drive.setPoseEstimate(new Pose2d(-70, 130, Math.toRadians(0)));
+        stop();
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom

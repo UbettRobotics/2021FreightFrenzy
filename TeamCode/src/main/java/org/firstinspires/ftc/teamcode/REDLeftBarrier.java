@@ -42,7 +42,7 @@ public class REDLeftBarrier extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         //////Start Camera Streaming//////
-        /*
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
 
@@ -64,7 +64,7 @@ public class REDLeftBarrier extends LinearOpMode {
         });
 
 
-         */
+
 ////////Program start////////////////////////////////////////////////////////////////////////
 
         waitForStart();
@@ -72,7 +72,7 @@ public class REDLeftBarrier extends LinearOpMode {
         basket.setPosition(0.5);
         ////
 
-        /*
+
         telemetry.addData("location: ", pipeline.getSide());
         telemetry.update();
         switch(pipeline.getSide()) {
@@ -93,7 +93,7 @@ public class REDLeftBarrier extends LinearOpMode {
 
         }
 
-         */
+
         level = 3;
         height = -2050;
         basket_value = 0.95;

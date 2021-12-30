@@ -53,7 +53,7 @@ public class Robot {
         frontintake = opMode.hardwareMap.get(DcMotor.class, "frontintake");
         slide = opMode.hardwareMap.get(DcMotor.class,"slide");
         basket = opMode.hardwareMap.servo.get("basket");
-        distance = opMode.hardwareMap.get(DistanceSensor.class, "distance");
+        //distance = opMode.hardwareMap.get(DistanceSensor.class, "distance");
 
 
 

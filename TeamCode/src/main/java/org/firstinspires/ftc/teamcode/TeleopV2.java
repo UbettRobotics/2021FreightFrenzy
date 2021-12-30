@@ -34,12 +34,12 @@ public class TeleopV2 extends LinearOpMode {
             boolean RBumper1 = gamepad1.right_bumper;
 
             double LStickY = gamepad1.left_stick_y;
-            double LStickX  = -gamepad1.left_stick_x;
+            double LStickX  = gamepad1.left_stick_x; // was "-gamepad..." by connor
             double RStickY = -gamepad1.right_stick_y;
             double RStickX = -gamepad1.right_stick_x;
 
-            double LTrigger1 = -gamepad1.left_trigger;
-            double RTrigger1 = -gamepad1.right_trigger;
+            double LTrigger1 = gamepad1.left_trigger; // was "-g..."
+            double RTrigger1 = gamepad1.right_trigger; // was "-g..."
 
             boolean a1 = gamepad1.a;
             boolean b1 = gamepad1.b;
