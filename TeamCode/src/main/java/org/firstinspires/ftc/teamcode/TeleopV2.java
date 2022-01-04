@@ -24,7 +24,7 @@ public class TeleopV2 extends LinearOpMode {
 
         int CurrentLevel = 0;
         final int LEVEL0 = 0;
-        final int LEVEL1 = -800;
+        final int LEVEL1 = -800; //Unused
         final int LEVEL2 = -1350;
         final int LEVEL3 = -2050;
         Boolean tipped = false;
