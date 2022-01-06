@@ -187,7 +187,6 @@ public class BLUERightBarrier extends LinearOpMode{
             sprint = drive.trajectoryBuilder(align.end())
                     .forward(73.3)
                     .build();
-
             drive.followTrajectory(align);
             drive.followTrajectory(sprint);
         }
