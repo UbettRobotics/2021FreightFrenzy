@@ -132,10 +132,10 @@ public class TeleopV2 extends LinearOpMode {
                 SetPower(-.5, -.5, -.5, -.5); //0.5
             }
             else if(dpadRight1){
-                SetPower(-.5, .5, .5, -.5); //0.5
+                SetPower(.5, -.5, -.5, .5); //0.5
             }
             else if(dpadLeft1){
-                SetPower(.5, -.5, -.5, .5);
+                SetPower(-.5, .5, .5, -.5);
             }
             else if(dpadDown1){
                 SetPower(.5, .5, .5, .5);
@@ -175,12 +175,18 @@ public class TeleopV2 extends LinearOpMode {
             }
 
 
+
+
+
+
+
+
             // intake motor
             if (LTrigger2 > .05){
-                RunIntake(1);
+                RunIntake(-1);
             }
             else if(RTrigger2 > .05) {
-                RunIntake(-1);
+                RunIntake(1);
             }
             else{
                 RunIntake(0.0);
