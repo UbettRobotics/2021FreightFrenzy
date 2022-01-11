@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode;
+
 import static org.firstinspires.ftc.teamcode.Robot.basket;
 import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
 import static org.firstinspires.ftc.teamcode.Robot.initMotors;
@@ -18,9 +19,9 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "[-]RED Left:Barrier", preselectTeleOp = "teleopV2")
-public class REDLeftBarrier extends LinearOpMode {
 
+@Autonomous(name = "<->BLUE Left:Gap", preselectTeleOp = "teleopV2")
+public class BLUELeftGap extends LinearOpMode{
     OpenCvCamera webcam;
     enum RobotPath {
         BARRIER,
@@ -28,12 +29,13 @@ public class REDLeftBarrier extends LinearOpMode {
     }
     RobotPath Path;
 
-    final int START_X = -36;
-    final int START_Y = -64;
+    final int START_X = 36;
+    final int START_Y = 64;
     int level = 0;
     int height = 0;
     double basket_value = 0;
     double alignDistance = 0;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,13 +47,14 @@ public class REDLeftBarrier extends LinearOpMode {
         initMotors(this);
         initAccessories(this);
 
-        Pose2d startPose = new Pose2d(START_X, START_Y, Math.toRadians(-90)); //init starting position
+        Pose2d startPose = new Pose2d(START_X, START_Y, Math.toRadians(90)); //init starting position
         drive.setPoseEstimate(startPose);
 
         //////Start Camera Streaming//////
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
+
 
         ConeVisionPipeline pipeline = new ConeVisionPipeline(telemetry);
         webcam.setPipeline(pipeline);
@@ -70,16 +73,13 @@ public class REDLeftBarrier extends LinearOpMode {
             }
         });
 
-
-
 ////////Program start////////////////////////////////////////////////////////////////////////
 
         waitForStart();
         ////Move on start/init
         basket.setPosition(0.5);
-        Path = RobotPath.BARRIER;
+        Path = RobotPath.GAP;
         ////
-
 
         telemetry.addData("location: ", pipeline.getSide());
         telemetry.update();
@@ -87,7 +87,7 @@ public class REDLeftBarrier extends LinearOpMode {
             case LEFT_SIDE:
                 level = 1;
                 height = 0;
-                basket_value = 0.95;
+                basket_value = 0.93;
                 break;
             case MIDDLE_SIDE:
                 level = 2;
@@ -100,33 +100,23 @@ public class REDLeftBarrier extends LinearOpMode {
                 basket_value = 0.93;
 
         }
+        Trajectory inchForward = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
+                .lineToLinearHeading(new Pose2d(12, 63.5,Math.toRadians(0)))//to 0
+                .build();
 
-        Trajectory inchForward = drive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(-36,-59))
-                .build();
-        Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end())
-                .lineToLinearHeading(new Pose2d(-14,-57.5,Math.toRadians(-159)))//to -180
-                .build();
-        Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-21))))
-                .splineToLinearHeading(new Pose2d(-73,-55,Math.toRadians(-40)),Math.toRadians(-135))//to 0
-                .build();
+        //drive sequence code
+
 
         drive.followTrajectory(inchForward);
-        drive.followTrajectory(toCarousel);
-        tablemotor.setPower(-0.5);
-        sleep(2500);
-        tablemotor.setPower(0);
 
-        drive.followTrajectory(toTurn);
-
-        Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
+        Trajectory toShippingHub2Short = drive.trajectoryBuilder(inchForward.end())//Bottom
+                .strafeLeft(27.5)
+                .build();
+        Trajectory toShippingHub2Middle = drive.trajectoryBuilder(inchForward.end())//Middle
                 .strafeLeft(28)
                 .build();
-        Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(29.5)
-                .build();
-        Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .strafeLeft(33)
+        Trajectory toShippingHub2Long = drive.trajectoryBuilder(inchForward.end())//Top
+                .strafeLeft(31.5)
                 .build();
 
         if(level == 1) {
@@ -145,44 +135,45 @@ public class REDLeftBarrier extends LinearOpMode {
         while(slide.isBusy()){}
 
         basket.setPosition(basket_value);
-        sleep(4000);
+        sleep(3000);
         basket.setPosition(0.5);
 
         slide.setTargetPosition(0);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slide.setPower(0.6);
 
+
         Trajectory align;
         Trajectory sprint;
         if(Path == RobotPath.GAP) {
             alignDistance = 35;
         } else {
-            alignDistance = 8;
+            alignDistance = 3.5;
         }
+
         if(level == 1 || level == 2) {
             align = drive.trajectoryBuilder(toShippingHub2Short.end())
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .forward(64)
+                    .forward(73.3)
                     .build();
             drive.followTrajectory(align);
-            drive.turn(Math.toRadians(147));
             drive.followTrajectory(sprint);
-        } else {
+        } else if(level == 3) {
             align = drive.trajectoryBuilder(toShippingHub2Long.end())
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .forward(64)
+                    .forward(73.3)
                     .build();
             drive.followTrajectory(align);
-            drive.turn(Math.toRadians(147));
             drive.followTrajectory(sprint);
         }
 
         if (isStopRequested()) return;
         sleep(2000);
+
 
     }
 }

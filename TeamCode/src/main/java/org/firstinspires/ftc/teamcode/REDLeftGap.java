@@ -91,12 +91,12 @@ public class REDLeftGap extends LinearOpMode {
                 break;
             case MIDDLE_SIDE:
                 level = 2;
-                height = -1350;
+                height = 1350;
                 basket_value = 0.95;
                 break;
             case RIGHT_SIDE:
                 level = 3;
-                height = -2050;
+                height = 2050;
                 basket_value = 0.93;
 
         }
@@ -164,20 +164,18 @@ public class REDLeftGap extends LinearOpMode {
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .forward(73.3)
+                    .back(63)
                     .build();
             drive.followTrajectory(align);
-            drive.turn(Math.toRadians(147));
             drive.followTrajectory(sprint);
         } else {
             align = drive.trajectoryBuilder(toShippingHub2Long.end())
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .forward(73.3)
+                    .back(63)
                     .build();
             drive.followTrajectory(align);
-            drive.turn(Math.toRadians(147));
             drive.followTrajectory(sprint);
         }
 

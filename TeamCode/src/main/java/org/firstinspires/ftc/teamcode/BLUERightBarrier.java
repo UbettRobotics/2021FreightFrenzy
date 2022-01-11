@@ -91,12 +91,12 @@ public class BLUERightBarrier extends LinearOpMode{
                 break;
             case MIDDLE_SIDE:
                 level = 2;
-                height = -1350;
+                height = 1350;
                 basket_value = 0.95;
                 break;
             case RIGHT_SIDE:
                 level = 3;
-                height = -2050;
+                height = 2050;
                 basket_value = 0.93;
 
         }
@@ -110,7 +110,7 @@ public class BLUERightBarrier extends LinearOpMode{
 
 
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-35))), true) //To turn next to shipping hub
-                .lineToLinearHeading(new Pose2d(-67, 75,Math.toRadians(-158)))//to -180
+                .lineToLinearHeading(new Pose2d(-67, 75,Math.toRadians(-153)))//to -180
                 .build();
 
 
@@ -130,13 +130,13 @@ public class BLUERightBarrier extends LinearOpMode{
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(27)
+                .strafeLeft(27.5)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
                 .strafeLeft(28)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .strafeLeft(31)
+                .strafeLeft(31.5)
                 .build();
 
         if(level == 1) {
