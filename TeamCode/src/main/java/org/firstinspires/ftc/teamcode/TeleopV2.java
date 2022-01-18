@@ -183,10 +183,10 @@ public class TeleopV2 extends LinearOpMode {
 
             // intake motor
             if (LTrigger2 > .05){
-                RunIntake(-1);
+                RunIntake(.70);
             }
             else if(RTrigger2 > .05) {
-                RunIntake(1);
+                RunIntake(-.70);
             }
             else{
                 RunIntake(0.0);
@@ -218,7 +218,6 @@ public class TeleopV2 extends LinearOpMode {
             telemetry.addData("X", imu.getAngularVelocity().xRotationRate);
             telemetry.addData("Y", imu.getAngularVelocity().yRotationRate);
             telemetry.addData("Z", imu.getAngularVelocity().zRotationRate);
-
             telemetry.update();
 
 

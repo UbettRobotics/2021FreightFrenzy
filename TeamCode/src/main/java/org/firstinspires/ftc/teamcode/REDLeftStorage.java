@@ -80,7 +80,6 @@ public class REDLeftStorage extends LinearOpMode {
         Path = RobotPath.BARRIER;
         ////
 
-
         telemetry.addData("location: ", pipeline.getSide());
         telemetry.update();
         switch(pipeline.getSide()) {

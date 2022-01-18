@@ -63,10 +63,11 @@ public class MotorTest extends LinearOpMode {
             boolean dpadRight2 = gamepad2.dpad_right;
             boolean dpadLeft2 = gamepad2.dpad_left;
 
+            /*
             if (dpadUp1) {
                 SetPower(.5, 0, 0, 0); //0.5
             } else if (dpadRight1) {
-                SetPower(.5, .5, 0, 0); //0.5
+                SetPower(0, .5, 0, 0); //0.5
             } else if (dpadLeft1) {
                 SetPower(0, 0, .5, 0);
             } else if (dpadDown1) {
@@ -75,6 +76,28 @@ public class MotorTest extends LinearOpMode {
             else {
                 SetPower(0, 0, 0, 0);
             }
+             */
+            boolean Barray[] = {a1,b1,x1,y1, LBumper1,RBumper1,dpadUp1,dpadLeft1,dpadDown1,dpadRight1};
+            double Darray[] = {LTrigger1,RTrigger1,RStickX,LStickX,RStickY,LStickY};
+
+            telemetry.addData("Input", Barray[0]);
+            telemetry.addData("Input", Barray[1]);
+            telemetry.addData("Input", Barray[2]);
+            telemetry.addData("Input", Barray[3]);
+            telemetry.addData("Input", Barray[4]);
+            telemetry.addData("Input", Barray[5]);
+            telemetry.addData("Input", Barray[6]);
+            telemetry.addData("Input", Barray[7]);
+            telemetry.addData("Input", Barray[8]);
+            telemetry.addData("Input", Barray[9]);
+
+            telemetry.addData("Input", Darray[0]);
+            telemetry.addData("Input", Darray[1]);
+            telemetry.addData("Input", Darray[2]);
+            telemetry.addData("Input", Darray[3]);
+            telemetry.addData("Input", Darray[4]);
+            telemetry.addData("Input", Darray[5]);
+            telemetry.update();
         }
 
     }

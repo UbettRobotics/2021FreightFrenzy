@@ -110,7 +110,7 @@ public class BLUERightGap extends LinearOpMode{
 
 
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-35))), true) //To turn next to shipping hub
-                .lineToLinearHeading(new Pose2d(-67, 75,Math.toRadians(-153)))//to -180
+                .lineToLinearHeading(new Pose2d(-69, 75,Math.toRadians(-153)))//to -180
                 .build();
 
 

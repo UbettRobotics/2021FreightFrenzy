@@ -110,7 +110,7 @@ public class BlueRightStorage extends LinearOpMode{
 
 
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-35))), true) //To turn next to shipping hub
-                .forward(27)
+                .forward(29)
                 .build();
 
         Trajectory toHub = drive.trajectoryBuilder(toTurn.end().plus(new Pose2d(0,0,Math.toRadians(-180))), true) //To turn next to shipping hub
