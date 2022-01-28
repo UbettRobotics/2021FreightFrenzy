@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.Robot.basket;
+import static org.firstinspires.ftc.teamcode.Robot.basketdefault;
 import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
 import static org.firstinspires.ftc.teamcode.Robot.initMotors;
 import static org.firstinspires.ftc.teamcode.Robot.slide;
@@ -77,7 +78,7 @@ public class BlueRightStorage extends LinearOpMode{
 
         waitForStart();
         ////Move on start/init
-        basket.setPosition(0.5);
+        basket.setPosition(basketdefault);
         Path = RobotPath.BARRIER;
         ////
 
@@ -171,7 +172,7 @@ public class BlueRightStorage extends LinearOpMode{
 
         basket.setPosition(basket_value);
         sleep(3000);
-        basket.setPosition(0.5);
+        basket.setPosition(Robot.basketdefault);
 
         slide.setTargetPosition(0);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);

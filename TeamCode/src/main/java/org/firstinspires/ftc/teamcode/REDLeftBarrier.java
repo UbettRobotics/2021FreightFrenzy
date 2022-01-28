@@ -32,7 +32,7 @@ public class REDLeftBarrier extends LinearOpMode {
     final int START_Y = -64;
     int level = 0;
     int height = 0;
-    double basket_value = 0;
+    double basket_value = 0.5;
     double alignDistance = 0;
 
     @Override
@@ -76,7 +76,7 @@ public class REDLeftBarrier extends LinearOpMode {
 
         waitForStart();
         ////Move on start/init
-        basket.setPosition(0.5);
+        basket.setPosition(basket_value);
         Path = RobotPath.BARRIER;
         ////
 
@@ -108,7 +108,7 @@ public class REDLeftBarrier extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-14,-57.5,Math.toRadians(-159)))//to -180
                 .build();
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-21))))
-                .splineToLinearHeading(new Pose2d(-75,-55,Math.toRadians(-40)),Math.toRadians(-135))//to 0
+                .splineToLinearHeading(new Pose2d(-71,-53,Math.toRadians(-40)),Math.toRadians(-135))//to 0
                 .build();
 
         drive.followTrajectory(inchForward);
@@ -120,13 +120,13 @@ public class REDLeftBarrier extends LinearOpMode {
         drive.followTrajectory(toTurn);
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(28)
+                .strafeLeft(31.8)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(29.5)
+                .strafeLeft(32.1)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .strafeLeft(33)
+                .strafeLeft(37)
                 .build();
 
         if(level == 1) {
@@ -146,7 +146,7 @@ public class REDLeftBarrier extends LinearOpMode {
 
         basket.setPosition(basket_value);
         sleep(4000);
-        basket.setPosition(0.5);
+        basket.setPosition(Robot.basketdefault);
 
         slide.setTargetPosition(0);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -164,20 +164,20 @@ public class REDLeftBarrier extends LinearOpMode {
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .forward(64)
+                    .forward(80)
                     .build();
             drive.followTrajectory(align);
-            drive.turn(Math.toRadians(147));
+            drive.turn(Math.toRadians(160));
             drive.followTrajectory(sprint);
         } else {
             align = drive.trajectoryBuilder(toShippingHub2Long.end())
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .forward(64)
+                    .forward(80)
                     .build();
             drive.followTrajectory(align);
-            drive.turn(Math.toRadians(147));
+            drive.turn(Math.toRadians(160));
             drive.followTrajectory(sprint);
         }
 

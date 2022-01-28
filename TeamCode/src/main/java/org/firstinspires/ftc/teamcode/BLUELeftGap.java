@@ -5,6 +5,9 @@ import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
 import static org.firstinspires.ftc.teamcode.Robot.initMotors;
 import static org.firstinspires.ftc.teamcode.Robot.slide;
 import static org.firstinspires.ftc.teamcode.Robot.tablemotor;
+import static org.firstinspires.ftc.teamcode.Robot.distance;
+import static org.firstinspires.ftc.teamcode.Robot.cm;
+
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -35,6 +38,9 @@ public class BLUELeftGap extends LinearOpMode{
     int height = 0;
     double basket_value = 0;
     double alignDistance = 0;
+    //Distance
+    double distanceMeasured = 0;
+    double followDistance;
 
 
     @Override
@@ -77,7 +83,7 @@ public class BLUELeftGap extends LinearOpMode{
 
         waitForStart();
         ////Move on start/init
-        basket.setPosition(0.5);
+        basket.setPosition(Robot.basketdefault);
         Path = RobotPath.GAP;
         ////
 
@@ -101,13 +107,26 @@ public class BLUELeftGap extends LinearOpMode{
 
         }
         Trajectory inchForward = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
-                .lineToLinearHeading(new Pose2d(12, 63.5,Math.toRadians(0)))//to 0
+                .lineToLinearHeading(new Pose2d(68, 75,Math.toRadians(160)))//to 0
                 .build();
 
         //drive sequence code
 
-
         drive.followTrajectory(inchForward);
+
+        //Distance Sensor - measured distance should be 68.5cm
+        ////////////////////////////////////////////Get Distance through average
+        distanceMeasured += distance.getDistance(cm);
+        /////////////////////////////////////////////
+
+        if(level == 1) {
+            followDistance = distanceMeasured - 8.5;
+        } else if(level == 2) {
+            followDistance = distanceMeasured - 4;
+        } else {
+            followDistance = distanceMeasured - 1.5;
+        }
+        followDistance = ((followDistance * (4.0/3.0))/2.54);//change cm to Robot units
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(inchForward.end())//Bottom
                 .strafeLeft(27.5)
@@ -136,7 +155,7 @@ public class BLUELeftGap extends LinearOpMode{
 
         basket.setPosition(basket_value);
         sleep(3000);
-        basket.setPosition(0.5);
+        basket.setPosition(Robot.basketdefault);
 
         slide.setTargetPosition(0);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);

@@ -76,7 +76,7 @@ public class REDLeftStorage extends LinearOpMode {
 
         waitForStart();
         ////Move on start/init
-        basket.setPosition(0.5);
+        basket.setPosition(Robot.basketdefault);
         Path = RobotPath.BARRIER;
         ////
 
@@ -104,10 +104,10 @@ public class REDLeftStorage extends LinearOpMode {
                 .lineTo(new Vector2d(-36,-59))
                 .build();
         Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end())
-                .lineToLinearHeading(new Pose2d(-12,-57.5,Math.toRadians(-159)))//to -180
+                .lineToLinearHeading(new Pose2d(-12,-57,Math.toRadians(-159)))//to -180
                 .build();
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-21))))
-                .strafeRight(26)
+                .strafeRight(25)
                 .build();
 
         drive.followTrajectory(inchForward);
@@ -149,7 +149,7 @@ public class REDLeftStorage extends LinearOpMode {
 
         basket.setPosition(basket_value);
         sleep(4000);
-        basket.setPosition(0.5);
+        basket.setPosition(Robot.basketdefault);
 
         /*
         slide.setTargetPosition(0);

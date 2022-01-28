@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.Robot.basket;
+import static org.firstinspires.ftc.teamcode.Robot.basketdefault;
 import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
 import static org.firstinspires.ftc.teamcode.Robot.initMotors;
 import static org.firstinspires.ftc.teamcode.Robot.slide;
@@ -77,7 +78,7 @@ public class BLUERightBarrier extends LinearOpMode{
 
         waitForStart();
         ////Move on start/init
-        basket.setPosition(0.5);
+        basket.setPosition(Robot.basketdefault);
         Path = RobotPath.BARRIER;
         ////
 
@@ -105,12 +106,12 @@ public class BLUERightBarrier extends LinearOpMode{
                 .build();
 
         Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end()) //turn to carousel
-                .lineToLinearHeading(new Pose2d(-16, 63.5,Math.toRadians(-55)))//to -90
+                .lineToLinearHeading(new Pose2d(-19, 63.5,Math.toRadians(-55)))//to -90
                 .build();
 
 
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-35))), true) //To turn next to shipping hub
-                .lineToLinearHeading(new Pose2d(-69, 75,Math.toRadians(-153)))//to -180
+                .lineToLinearHeading(new Pose2d(-74, 69,Math.toRadians(-153)))//to -180
                 .build();
 
 
@@ -133,7 +134,7 @@ public class BLUERightBarrier extends LinearOpMode{
                 .strafeLeft(27.5)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(28)
+                .strafeLeft(29.5)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
                 .strafeLeft(31.5)
@@ -156,12 +157,11 @@ public class BLUERightBarrier extends LinearOpMode{
 
         basket.setPosition(basket_value);
         sleep(3000);
-        basket.setPosition(0.5);
+        basket.setPosition(basketdefault);
 
         slide.setTargetPosition(0);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slide.setPower(0.6);
-
 
         Trajectory align;
         Trajectory sprint;

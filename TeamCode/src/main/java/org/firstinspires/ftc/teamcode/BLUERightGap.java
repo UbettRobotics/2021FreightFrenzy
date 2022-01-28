@@ -77,7 +77,7 @@ public class BLUERightGap extends LinearOpMode{
 
         waitForStart();
         ////Move on start/init
-        basket.setPosition(0.5);
+        basket.setPosition(Robot.basketdefault);
         Path = RobotPath.GAP;
         ////
 
@@ -115,7 +115,6 @@ public class BLUERightGap extends LinearOpMode{
 
 
 
-
         //drive sequence code
         drive.followTrajectory(inchForward);
 
@@ -130,10 +129,10 @@ public class BLUERightGap extends LinearOpMode{
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(27.5)
+                .strafeLeft(28)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(28)
+                .strafeLeft(29)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
                 .strafeLeft(31.5)
@@ -156,7 +155,7 @@ public class BLUERightGap extends LinearOpMode{
 
         basket.setPosition(basket_value);
         sleep(3000);
-        basket.setPosition(0.5);
+        basket.setPosition(Robot.basketdefault);
 
         slide.setTargetPosition(0);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -185,7 +184,7 @@ public class BLUERightGap extends LinearOpMode{
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .forward(73.3)
+                    .forward(65)
                     .build();
 
             drive.followTrajectory(align);

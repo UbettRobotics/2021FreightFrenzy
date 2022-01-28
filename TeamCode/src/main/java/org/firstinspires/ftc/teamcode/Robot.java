@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -21,7 +22,7 @@ public class Robot {
 
 
     //public final static double BLOCKER_OPEN = 0.25;
-
+    public static double basketdefault = 0.55;
     final static double DEG90 = 22;//90 degree turn distance ()
 
     static DcMotor rightfront;
@@ -38,6 +39,7 @@ public class Robot {
     static BNO055IMU imu;
     static Orientation lastAngles = new Orientation();
     static DistanceSensor distance;
+    static TouchSensor limit;
     static double globalAngle, correction;
     static DistanceUnit cm = DistanceUnit.CM;
 
@@ -53,8 +55,8 @@ public class Robot {
         frontintake = opMode.hardwareMap.get(DcMotor.class, "frontintake");
         slide = opMode.hardwareMap.get(DcMotor.class,"slide");
         basket = opMode.hardwareMap.servo.get("basket");
-        //distance = opMode.hardwareMap.get(DistanceSensor.class, "distance");
-
+        distance = opMode.hardwareMap.get(DistanceSensor.class, "distance");
+        limit = opMode.hardwareMap.get(TouchSensor.class, "limit");
 
 
         rightfront.setDirection(DcMotor.Direction.REVERSE);
@@ -177,6 +179,21 @@ public class Robot {
         frontintake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         frontintake.setPower(Frontintake);
+    }
+    public static void RunSlide(double level, double power, Boolean up, Boolean down){
+        //level can be double 0-10
+        slide.setTargetPosition((int)(level));
+        if(slide.getMode().compareTo(DcMotor.RunMode.RUN_WITHOUT_ENCODER)==0){
+            // determine basket going up, down, or nothing
+            int multiplier = 0;
+            if (up == true) multiplier = 1;
+            else if (down == true) multiplier = -1;
+            slide.setPower(.35 * multiplier);
+        }
+        else {
+            slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slide.setPower(power);
+        }
     }
     public static void RunSlide(double level, double power){
         //level can be double 0-10

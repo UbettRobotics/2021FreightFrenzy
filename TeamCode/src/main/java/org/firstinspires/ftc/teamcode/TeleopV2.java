@@ -163,12 +163,12 @@ public class TeleopV2 extends LinearOpMode {
             } else if (b2){
                 basket.setPosition(.80);
             }else {
-                basket.setPosition(.5);
+                basket.setPosition(basketdefault);
                 if(CurrentLevel == LEVEL0 ){
                     tipped = false;
                 }
                 else if(!slide.isBusy() && tipped == true){
-                    RunSlide(LEVEL1,1);
+                    RunSlide(LEVEL1,1, dpadUP2, dpadDOWN2);
                     CurrentLevel = LEVEL0;
                     tipped = false;
                 }
@@ -183,10 +183,10 @@ public class TeleopV2 extends LinearOpMode {
 
             // intake motor
             if (LTrigger2 > .05){
-                RunIntake(.70);
+                RunIntake(.90);
             }
             else if(RTrigger2 > .05) {
-                RunIntake(-.70);
+                RunIntake(-.90);
             }
             else{
                 RunIntake(0.0);
@@ -205,19 +205,29 @@ public class TeleopV2 extends LinearOpMode {
                 CurrentLevel = 5;
             }
             //update linear slide position
-            RunSlide(CurrentLevel, 1);
+            RunSlide(CurrentLevel, 1, dpadUP2, dpadDOWN2);
+
 
             if(a1 && a2 && b1){
                 slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
 
-            //telemetry/////////////////////////////////////////////////////////////////////////////
+            if(slide.getCurrentPosition() == 0 && limit.isPressed()){
+                slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+
+
+
+
+                //telemetry/////////////////////////////////////////////////////////////////////////////
             telemetry.addData("ECV", slide.getCurrentPosition());
             telemetry.addData("Target",CurrentLevel);
             telemetry.addData("IMU", imu.getAngularOrientation());
             telemetry.addData("X", imu.getAngularVelocity().xRotationRate);
             telemetry.addData("Y", imu.getAngularVelocity().yRotationRate);
             telemetry.addData("Z", imu.getAngularVelocity().zRotationRate);
+            telemetry.addData("D",distance.getDistance(cm));
+            telemetry.addData("Touch Sensor", limit.isPressed());
             telemetry.update();
 
 
