@@ -106,12 +106,13 @@ public class BLUERightBarrier extends LinearOpMode{
                 .build();
 
         Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end()) //turn to carousel
-                .lineToLinearHeading(new Pose2d(-19, 63.5,Math.toRadians(-55)))//to -90
+                .lineToLinearHeading(new Pose2d(-19, 64,Math.toRadians(-55)))//to -90
                 .build();
 
 
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-35))), true) //To turn next to shipping hub
-                .lineToLinearHeading(new Pose2d(-74, 69,Math.toRadians(-153)))//to -180
+                .lineToLinearHeading(new Pose2d(-68, 70,Math.toRadians(-153)))//to -180
+                //.lineToLinearHeading(new Pose2d(-70, 62, Math.toRadians(-155)))
                 .build();
 
 
@@ -134,10 +135,10 @@ public class BLUERightBarrier extends LinearOpMode{
                 .strafeLeft(27.5)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(29.5)
+                .strafeLeft(28.5)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .strafeLeft(31.5)
+                .strafeLeft(30)
                 .build();
 
         if(level == 1) {
@@ -156,7 +157,7 @@ public class BLUERightBarrier extends LinearOpMode{
         while(slide.isBusy()){}
 
         basket.setPosition(basket_value);
-        sleep(3000);
+        sleep(2000);
         basket.setPosition(basketdefault);
 
         slide.setTargetPosition(0);
