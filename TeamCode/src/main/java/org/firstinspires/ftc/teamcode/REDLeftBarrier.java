@@ -105,7 +105,7 @@ public class REDLeftBarrier extends LinearOpMode {
                 .lineTo(new Vector2d(-36,-59))
                 .build();
         Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end())
-                .lineToLinearHeading(new Pose2d(-14,-57.5,Math.toRadians(-159)))//to -180
+                .lineToLinearHeading(new Pose2d(-13,-57.5,Math.toRadians(-159)))//to -180
                 .build();
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-21))))
                 .splineToLinearHeading(new Pose2d(-71,-53,Math.toRadians(-40)),Math.toRadians(-135))//to 0

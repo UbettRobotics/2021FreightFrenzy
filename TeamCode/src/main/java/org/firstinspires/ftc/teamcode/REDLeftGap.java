@@ -32,7 +32,7 @@ public class REDLeftGap extends LinearOpMode {
     final int START_Y = -64;
     int level = 0;
     int height = 0;
-    double basket_value = 0;
+    double basket_value = 0.5;
     double alignDistance = 0;
 
     @Override
@@ -71,11 +71,12 @@ public class REDLeftGap extends LinearOpMode {
         });
 
 
+
 ////////Program start////////////////////////////////////////////////////////////////////////
 
         waitForStart();
         ////Move on start/init
-        basket.setPosition(Robot.basketdefault);
+        basket.setPosition(basket_value);
         Path = RobotPath.GAP;
         ////
 
@@ -104,7 +105,7 @@ public class REDLeftGap extends LinearOpMode {
                 .lineTo(new Vector2d(-36,-59))
                 .build();
         Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end())
-                .lineToLinearHeading(new Pose2d(-14,-57.5,Math.toRadians(-159)))//to -180
+                .lineToLinearHeading(new Pose2d(-13,-57.5,Math.toRadians(-159)))//to -180
                 .build();
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-21))))
                 .splineToLinearHeading(new Pose2d(-71,-53,Math.toRadians(-40)),Math.toRadians(-135))//to 0
@@ -153,7 +154,7 @@ public class REDLeftGap extends LinearOpMode {
 
         Trajectory align;
         Trajectory sprint;
-        if(Path == REDLeftGap.RobotPath.GAP) {
+        if(Path == RobotPath.GAP) {
             alignDistance = 35;
         } else {
             alignDistance = 8;
@@ -166,13 +167,14 @@ public class REDLeftGap extends LinearOpMode {
                     .back(80)
                     .build();
             drive.followTrajectory(align);
+            drive.turn(Math.toRadians(160));
             drive.followTrajectory(sprint);
         } else {
             align = drive.trajectoryBuilder(toShippingHub2Long.end())
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .back(80)
+                    .forward(80)
                     .build();
             drive.followTrajectory(align);
             drive.followTrajectory(sprint);

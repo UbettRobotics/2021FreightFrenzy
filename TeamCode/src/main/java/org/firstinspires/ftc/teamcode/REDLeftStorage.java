@@ -107,9 +107,11 @@ public class REDLeftStorage extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-12,-57,Math.toRadians(-159)))//to -180
                 .build();
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-21))))
-                .strafeRight(25)
+                .lineTo(new Vector2d(-5, -20))
                 .build();
-
+        Trajectory lineToWall = drive.trajectoryBuilder(toTurn.end())
+                .strafeRight(10)
+                .build();
         drive.followTrajectory(inchForward);
         drive.followTrajectory(toCarousel);
         tablemotor.setPower(-0.5);
@@ -117,18 +119,20 @@ public class REDLeftStorage extends LinearOpMode {
         tablemotor.setPower(0);
 
         drive.followTrajectory(toTurn);
-        drive.turn(Math.toRadians(-91));
-        stop();
-
+        drive.turn(Math.toRadians(-70));
+        drive.setPoseEstimate(drive.getPoseEstimate().plus(new Pose2d(0, 0, Math.toRadians(270))));
+        drive.followTrajectory(lineToWall);
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(34)
+                .strafeLeft(41.5)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(34.5)
+                .strafeLeft(42)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .strafeLeft(37)
+                .strafeLeft(44)
                 .build();
+
+
 
         if(level == 1) {
             drive.followTrajectory(toShippingHub2Short);
@@ -140,12 +144,12 @@ public class REDLeftStorage extends LinearOpMode {
 
         //Deliver
 
-        /*
+
         slide.setTargetPosition(height);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slide.setPower(0.6);
         while(slide.isBusy()){}
-        */
+
 
         basket.setPosition(basket_value);
         sleep(4000);
@@ -159,10 +163,20 @@ public class REDLeftStorage extends LinearOpMode {
 
         Trajectory align;
         Trajectory sprint;
-        Trajectory park = drive.trajectoryBuilder(toShippingHub2Long.end())
-                .strafeRight(37)
+        align = drive.trajectoryBuilder(toShippingHub2Long.end())
+                .strafeRight(40)
                 .build();
+        Trajectory park = drive.trajectoryBuilder(align.end())
+                .back(9)
+                .build();
+        drive.followTrajectory(align);
         drive.followTrajectory(park);
+
+
+        slide.setTargetPosition(0);
+        slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slide.setPower(0.6);
+        while(slide.isBusy()){}
 
         if (isStopRequested()) return;
         sleep(2000);

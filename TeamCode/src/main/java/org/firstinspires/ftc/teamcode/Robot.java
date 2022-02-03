@@ -22,7 +22,7 @@ public class Robot {
 
 
     //public final static double BLOCKER_OPEN = 0.25;
-    public static double basketdefault = 0.55;
+    public static double basketdefault = 0.52;
     final static double DEG90 = 22;//90 degree turn distance ()
 
     static DcMotor rightfront;

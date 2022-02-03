@@ -106,15 +106,13 @@ public class BLUERightBarrier extends LinearOpMode{
                 .build();
 
         Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end()) //turn to carousel
-                .lineToLinearHeading(new Pose2d(-19, 64,Math.toRadians(-55)))//to -90
+                .lineToLinearHeading(new Pose2d(-16, 60,Math.toRadians(-55)))//to -90
                 .build();
 
 
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-35))), true) //To turn next to shipping hub
-                .lineToLinearHeading(new Pose2d(-68, 70,Math.toRadians(-153)))//to -180
-                //.lineToLinearHeading(new Pose2d(-70, 62, Math.toRadians(-155)))
+                .lineToLinearHeading(new Pose2d(-67, 75,Math.toRadians(-165)))//to -180
                 .build();
-
 
 
 
@@ -132,13 +130,13 @@ public class BLUERightBarrier extends LinearOpMode{
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(27.5)
+                .strafeLeft(29.5)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(28.5)
+                .strafeLeft(30.5)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .strafeLeft(30)
+                .strafeLeft(31.5)
                 .build();
 
         if(level == 1) {
@@ -157,12 +155,13 @@ public class BLUERightBarrier extends LinearOpMode{
         while(slide.isBusy()){}
 
         basket.setPosition(basket_value);
-        sleep(2000);
-        basket.setPosition(basketdefault);
+        sleep(3000);
+        basket.setPosition(Robot.basketdefault);
 
         slide.setTargetPosition(0);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slide.setPower(0.6);
+
 
         Trajectory align;
         Trajectory sprint;
@@ -186,15 +185,15 @@ public class BLUERightBarrier extends LinearOpMode{
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .forward(73.3)
+                    .forward(65)
                     .build();
+
             drive.followTrajectory(align);
             drive.followTrajectory(sprint);
         }
 
         if (isStopRequested()) return;
         sleep(2000);
-
 
     }
 }
