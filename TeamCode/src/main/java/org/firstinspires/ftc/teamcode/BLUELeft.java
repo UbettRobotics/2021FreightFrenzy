@@ -91,15 +91,15 @@ public class BLUELeft extends LinearOpMode{
         }
 
         double added = 0;
-        if (level == 2) added = 2;
-        else if (level == 3) added = 5.5;
+        if (level == 2) added = 3.5;
+        else if (level == 3) added = 7;
 
         Trajectory deliverPreload = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
-                .lineToLinearHeading(new Pose2d(14, 87 + added, Math.toRadians(-20)))
+                .lineToLinearHeading(new Pose2d(14, 85 + added, Math.toRadians(-20)))
                 .build();
 
         Trajectory shippingToWall = drive.trajectoryBuilder(deliverPreload.end()) //moves to
-                .lineToLinearHeading(new Pose2d(35, 35, Math.toRadians(117)))
+                .lineToLinearHeading(new Pose2d(30, 36, Math.toRadians(110)))
                 .build();
 
         Trajectory toWarehouse = drive.trajectoryBuilder(shippingToWall.end())
@@ -110,7 +110,7 @@ public class BLUELeft extends LinearOpMode{
                 .forward(68)
                 .build();
         Trajectory toHub = drive.trajectoryBuilder(warehouseToWall.end())
-                .lineToLinearHeading(new Pose2d(40, 82, Math.toRadians(-15)))
+                .lineToLinearHeading(new Pose2d(32, 94, Math.toRadians(-25)))
                 .build();
 
 
@@ -141,10 +141,10 @@ public class BLUELeft extends LinearOpMode{
                     .build();
             //changes how far the robot goes back to account for ball and block pushing
             Trajectory warehouseToWallLong = drive.trajectoryBuilder(toWarehouse.end())
-                    .forward(60 + (i * 5))
+                    .forward(40 + (i * 5))
                     .build();
             Trajectory align = drive.trajectoryBuilder(toWarehouseLong.end())
-                    .strafeLeft(2)
+                    .strafeLeft(4)
                     .build();
 
 
@@ -179,10 +179,13 @@ public class BLUELeft extends LinearOpMode{
         }
 
         Trajectory toPark = drive.trajectoryBuilder(toHub.end())
-                .strafeRight(25)
+                .strafeRight(30)
                 .build();
         drive.followTrajectory(toPark);
-        drive.followTrajectory(warehouseToWall);
+        Trajectory Park = drive.trajectoryBuilder(toPark.end())
+                .forward(50)
+                .build();
+        drive.followTrajectory(Park);
 
         if (isStopRequested()) return;
         sleep(2000);
