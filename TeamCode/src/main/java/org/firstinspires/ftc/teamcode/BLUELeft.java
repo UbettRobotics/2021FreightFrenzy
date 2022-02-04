@@ -95,25 +95,24 @@ public class BLUELeft extends LinearOpMode{
         else if (level == 3) added = 7;
 
         Trajectory deliverPreload = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
-                .lineToLinearHeading(new Pose2d(14, 85 + added, Math.toRadians(-20)))
+                .lineToLinearHeading(new Pose2d(14, 87 + added, Math.toRadians(-20)))
                 .build();
 
-        Trajectory shippingToWall = drive.trajectoryBuilder(deliverPreload.end()) //moves to
-                .lineToLinearHeading(new Pose2d(30, 36, Math.toRadians(110)))
+        Trajectory shippingToWall = drive.trajectoryBuilder(deliverPreload.end()) //moves bot from hub to wall
+                .lineToLinearHeading(new Pose2d(30, 34, Math.toRadians(115)))
                 .build();
 
-        Trajectory toWarehouse = drive.trajectoryBuilder(shippingToWall.end())
+        Trajectory toWarehouse = drive.trajectoryBuilder(shippingToWall.end()) //moves bot from wall in to warehouse
                 .back(42)
                 .build();
 
-        Trajectory warehouseToWall = drive.trajectoryBuilder(toWarehouse.end())
+        Trajectory warehouseToWall = drive.trajectoryBuilder(toWarehouse.end()) //moves bot from warehouse to wall
                 .forward(68)
                 .build();
-        Trajectory toHub = drive.trajectoryBuilder(warehouseToWall.end())
+
+        Trajectory toHub = drive.trajectoryBuilder(warehouseToWall.end()) //moves bot from ware house to wall
                 .lineToLinearHeading(new Pose2d(32, 94, Math.toRadians(-25)))
                 .build();
-
-
 
         drive.followTrajectory(deliverPreload);
 
