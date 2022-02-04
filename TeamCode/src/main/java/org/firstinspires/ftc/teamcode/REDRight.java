@@ -91,10 +91,10 @@ public class REDRight extends LinearOpMode{
         }
 
         double added = 0;
-        if (level == 2) added = 2;
+        if (level == 2) added = 0.5;
         else if (level == 3) added = 5.5;
         Trajectory deliverPreload = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
-               .lineToLinearHeading(new Pose2d(67.5, -38 + added, Math.toRadians(-15)))
+               .lineToLinearHeading(new Pose2d(67.5, -43 + added, Math.toRadians(-20)))
                .build();
 
         Trajectory shippingToWall = drive.trajectoryBuilder(deliverPreload.end()) //moves to
@@ -109,7 +109,7 @@ public class REDRight extends LinearOpMode{
                 .forward(68)
                 .build();
         Trajectory toHub = drive.trajectoryBuilder(warehouseToWall.end())
-                .lineTo(new Vector2d(76, -44))
+                .lineTo(new Vector2d(80, -41))
                 .build();
 
 
@@ -135,7 +135,7 @@ public class REDRight extends LinearOpMode{
         for(int i = 0; i < 1; i++) {
             //changes how far the robot goes foward to account for ball and block pushing
             Trajectory toWarehouseLong = drive.trajectoryBuilder(shippingToWall.end())
-                    .back(45 + (i * 5))
+                    .back(50 + (i * 5))
                     .build();
             //changes how far the robot goes back to account for ball and block pushing
             Trajectory warehouseToWallLong = drive.trajectoryBuilder(toWarehouse.end())
@@ -175,9 +175,14 @@ public class REDRight extends LinearOpMode{
             slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             slide.setPower(0.6);
         }
-        drive.followTrajectory(shippingToWall);
-        drive.followTrajectory(toWarehouse);
-
+        Trajectory toPark = drive.trajectoryBuilder(shippingToWall.end()) //moves to
+                .strafeRight(40)
+                .build();
+        drive.followTrajectory(toPark);
+        Trajectory Park = drive.trajectoryBuilder(toPark.end()) //moves to
+                .back(60)
+                .build();
+        drive.followTrajectory(Park);
         if (isStopRequested()) return;
         sleep(2000);
 

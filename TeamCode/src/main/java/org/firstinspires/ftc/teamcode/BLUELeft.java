@@ -76,7 +76,7 @@ public class BLUELeft extends LinearOpMode{
             case LEFT_SIDE:
                 level = 1;
                 height = 0;
-                basket_value = 0.92;
+                basket_value = 0.95;
                 break;
             case MIDDLE_SIDE:
                 level = 2;
@@ -86,7 +86,7 @@ public class BLUELeft extends LinearOpMode{
             case RIGHT_SIDE:
                 level = 3;
                 height = 2050;
-                basket_value = 0.93;
+                basket_value = 0.97;
 
         }
 
@@ -110,8 +110,8 @@ public class BLUELeft extends LinearOpMode{
                 .forward(68)
                 .build();
 
-        Trajectory toHub = drive.trajectoryBuilder(warehouseToWall.end()) //moves bot from ware house to wall
-                .lineToLinearHeading(new Pose2d(32, 94, Math.toRadians(-25)))
+        Trajectory toHub = drive.trajectoryBuilder(warehouseToWall.end()) //moves bot from wall to hub
+                .lineToLinearHeading(new Pose2d(27, 91, Math.toRadians(-25)))
                 .build();
 
         drive.followTrajectory(deliverPreload);
@@ -142,8 +142,10 @@ public class BLUELeft extends LinearOpMode{
             Trajectory warehouseToWallLong = drive.trajectoryBuilder(toWarehouse.end())
                     .forward(40 + (i * 5))
                     .build();
+
+            //re-aligns the bot by pushing against the wall
             Trajectory align = drive.trajectoryBuilder(toWarehouseLong.end())
-                    .strafeLeft(4)
+                    .strafeLeft(6)
                     .build();
 
 
@@ -178,7 +180,7 @@ public class BLUELeft extends LinearOpMode{
         }
 
         Trajectory toPark = drive.trajectoryBuilder(toHub.end())
-                .strafeRight(30)
+                .strafeRight(32)
                 .build();
         drive.followTrajectory(toPark);
         Trajectory Park = drive.trajectoryBuilder(toPark.end())

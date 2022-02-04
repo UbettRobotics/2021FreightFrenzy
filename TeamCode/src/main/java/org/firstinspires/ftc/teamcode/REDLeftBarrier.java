@@ -120,13 +120,13 @@ public class REDLeftBarrier extends LinearOpMode {
         drive.followTrajectory(toTurn);
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(31.8)
+                .strafeLeft(26.4)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(32.1)
+                .strafeLeft(28.2)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .strafeLeft(37)
+                .strafeLeft(32)
                 .build();
 
         if(level == 1) {
@@ -157,7 +157,7 @@ public class REDLeftBarrier extends LinearOpMode {
         if(Path == RobotPath.GAP) {
             alignDistance = 35;
         } else {
-            alignDistance = 8;
+            alignDistance = 10;
         }
         if(level == 1 || level == 2) {
             align = drive.trajectoryBuilder(toShippingHub2Short.end())
@@ -167,7 +167,7 @@ public class REDLeftBarrier extends LinearOpMode {
                     .forward(80)
                     .build();
             drive.followTrajectory(align);
-            drive.turn(Math.toRadians(160));
+            drive.turn(Math.toRadians(150));
             drive.followTrajectory(sprint);
         } else {
             align = drive.trajectoryBuilder(toShippingHub2Long.end())
@@ -177,7 +177,7 @@ public class REDLeftBarrier extends LinearOpMode {
                     .forward(80)
                     .build();
             drive.followTrajectory(align);
-            drive.turn(Math.toRadians(160));
+            drive.turn(Math.toRadians(150));
             drive.followTrajectory(sprint);
         }
 
