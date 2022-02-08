@@ -123,13 +123,13 @@ public class REDLeftStorage extends LinearOpMode {
         drive.setPoseEstimate(drive.getPoseEstimate().plus(new Pose2d(0, 0, Math.toRadians(270))));
         drive.followTrajectory(lineToWall);
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(41.5)
+                .strafeLeft(39.5)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(42)
+                .strafeLeft(40.5)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .strafeLeft(44)
+                .strafeLeft(42)
                 .build();
 
 

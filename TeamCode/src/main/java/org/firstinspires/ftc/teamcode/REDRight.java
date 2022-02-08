@@ -91,10 +91,10 @@ public class REDRight extends LinearOpMode{
         }
 
         double added = 0;
-        if (level == 2) added = 0.5;
+        if (level == 2) added = 1;
         else if (level == 3) added = 5.5;
         Trajectory deliverPreload = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
-               .lineToLinearHeading(new Pose2d(67.5, -43 + added, Math.toRadians(-20)))
+               .lineToLinearHeading(new Pose2d(67.5, -44 + added, Math.toRadians(-20)))
                .build();
 
         Trajectory shippingToWall = drive.trajectoryBuilder(deliverPreload.end()) //moves to
@@ -113,7 +113,7 @@ public class REDRight extends LinearOpMode{
                 .build();
 
 
-
+        //Deliver preloaded block
         drive.followTrajectory(deliverPreload);
 
         slide.setTargetPosition(height);
@@ -142,10 +142,11 @@ public class REDRight extends LinearOpMode{
                     .forward(60 + (i * 5))
                     .build();
             Trajectory align = drive.trajectoryBuilder(toWarehouseLong.end())
-                    .strafeRight(11.2)
+                    .strafeRight(11)
                     .build();
 
-
+            // Leave the shipping hub and get to the warehouse
+            // Get a block
             drive.followTrajectory(shippingToWall);
 
             RunIntake(-.90);
@@ -155,6 +156,9 @@ public class REDRight extends LinearOpMode{
 
             sleep(1000);
             drive.followTrajectory(align);
+
+
+            // Go to shipping hub and deliver block
             RunIntake(.90);
             slide.setTargetPosition(height);
             slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);

@@ -86,20 +86,20 @@ public class BLUELeft extends LinearOpMode{
             case RIGHT_SIDE:
                 level = 3;
                 height = 2050;
-                basket_value = 0.97;
+                basket_value = 0.96;
 
         }
 
         double added = 0;
-        if (level == 2) added = 3.5;
-        else if (level == 3) added = 7;
+        if (level == 2) added = 1;
+        else if (level == 3) added = 5;
 
         Trajectory deliverPreload = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
-                .lineToLinearHeading(new Pose2d(14, 87 + added, Math.toRadians(-20)))
+                .lineToLinearHeading(new Pose2d(14, 86 + added, Math.toRadians(-20)))
                 .build();
 
         Trajectory shippingToWall = drive.trajectoryBuilder(deliverPreload.end()) //moves bot from hub to wall
-                .lineToLinearHeading(new Pose2d(30, 34, Math.toRadians(115)))
+                .lineToLinearHeading(new Pose2d(30, 36, Math.toRadians(114)))
                 .build();
 
         Trajectory toWarehouse = drive.trajectoryBuilder(shippingToWall.end()) //moves bot from wall in to warehouse
@@ -114,6 +114,7 @@ public class BLUELeft extends LinearOpMode{
                 .lineToLinearHeading(new Pose2d(27, 91, Math.toRadians(-25)))
                 .build();
 
+        // Deliver preload block
         drive.followTrajectory(deliverPreload);
 
         slide.setTargetPosition(height);
@@ -145,10 +146,10 @@ public class BLUELeft extends LinearOpMode{
 
             //re-aligns the bot by pushing against the wall
             Trajectory align = drive.trajectoryBuilder(toWarehouseLong.end())
-                    .strafeLeft(6)
+                    .strafeLeft(9)
                     .build();
 
-
+            // go to the wall from the shipping hub and begin intaking
             drive.followTrajectory(shippingToWall);
 
             RunIntake(-.90);

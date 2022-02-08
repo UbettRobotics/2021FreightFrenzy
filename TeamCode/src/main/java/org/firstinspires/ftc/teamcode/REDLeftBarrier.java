@@ -87,7 +87,7 @@ public class REDLeftBarrier extends LinearOpMode {
             case LEFT_SIDE:
                 level = 1;
                 height = 0;
-                basket_value = 0.95;
+                basket_value = 0.94;
                 break;
             case MIDDLE_SIDE:
                 level = 2;
@@ -120,7 +120,7 @@ public class REDLeftBarrier extends LinearOpMode {
         drive.followTrajectory(toTurn);
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(26.4)
+                .strafeLeft(27)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
                 .strafeLeft(28.2)

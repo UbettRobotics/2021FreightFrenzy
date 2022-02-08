@@ -87,7 +87,7 @@ public class BLUERightGap extends LinearOpMode{
             case LEFT_SIDE:
                 level = 1;
                 height = 0;
-                basket_value = 0.93;
+                basket_value = 0.94;
                 break;
             case MIDDLE_SIDE:
                 level = 2;
@@ -105,12 +105,12 @@ public class BLUERightGap extends LinearOpMode{
                 .build();
 
         Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end()) //turn to carousel
-                .lineToLinearHeading(new Pose2d(-16, 60,Math.toRadians(-55)))//to -90
+                .lineToLinearHeading(new Pose2d(-18, 65, Math.toRadians(-60)))//to -90
                 .build();
 
 
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-35))), true) //To turn next to shipping hub
-                .lineToLinearHeading(new Pose2d(-67, 75,Math.toRadians(-165)))//to -180
+                .lineToLinearHeading(new Pose2d(-67, 75,Math.toRadians(-163)))//to -180
                 .build();
 
 
@@ -129,13 +129,13 @@ public class BLUERightGap extends LinearOpMode{
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(29.5)
+                .strafeLeft(27)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(30.5)
+                .strafeLeft(29)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .strafeLeft(31.5)
+                .strafeLeft(30.5)
                 .build();
 
         if(level == 1) {

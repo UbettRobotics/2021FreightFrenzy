@@ -88,7 +88,7 @@ public class BlueRightStorage extends LinearOpMode{
             case LEFT_SIDE:
                 level = 1;
                 height = 0;
-                basket_value = 0.93;
+                basket_value = 0.95;
                 break;
             case MIDDLE_SIDE:
                 level = 2;
@@ -98,7 +98,7 @@ public class BlueRightStorage extends LinearOpMode{
             case RIGHT_SIDE:
                 level = 3;
                 height = 2050;
-                basket_value = 0.93;
+                basket_value = 0.94;
 
         }
         Trajectory inchForward = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
@@ -121,7 +121,7 @@ public class BlueRightStorage extends LinearOpMode{
                 .strafeRight(45)
                 .build();
         Trajectory fullPark = drive.trajectoryBuilder(park.end()) //To turn next to shipping hub
-                .forward(13)
+                .forward(9)
                 .build();
 
 
@@ -146,10 +146,10 @@ public class BlueRightStorage extends LinearOpMode{
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(9)
+                .strafeLeft(4)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(9.5)
+                .strafeLeft(8.5)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
                 .strafeLeft(11)
