@@ -30,7 +30,6 @@ public class TeleopV2 extends LinearOpMode {
         final int LEVEL3 = 2050;
         Boolean tipped = false;
         ElapsedTime elapsedTime;
-        cap.setPosition(capdefault);
         while(opModeIsActive()) {
             boolean LBumper1 = gamepad1.left_bumper;
             boolean RBumper1 = gamepad1.right_bumper;
@@ -97,12 +96,12 @@ public class TeleopV2 extends LinearOpMode {
 
             //Trigger Turning
             else if (Math.abs(LTrigger1) > 0) {
-                SetPower(-.25 * LTrigger1, .25 * LTrigger1, -.25 * LTrigger1, .25 * LTrigger1); //.25
+                SetPower(-.25 * LTrigger1, 25 * LTrigger1, -.25 * LTrigger1, .25 * LTrigger1); //.25
             } else if (Math.abs(RTrigger1) > 0) {
                 SetPower(.25 * RTrigger1, -.25 * RTrigger1, .25 * RTrigger1, -.25 * RTrigger1); //.25
-            } else if (LBumper1) {
-                SetPower(-.25 * 1, .25 * 1, -.25 * 1, .25 * 1);
             } else if (RBumper1) {
+                SetPower(-.25 * 1, .25 * 1, -.25 * 1, .25 * 1);
+            } else if (LBumper1) {
                 SetPower(.25 * 1, -.25 * 1, .25 * 1, -.25 * 1);
             } else {
                 SetPower(0, 0, 0, 0);
@@ -124,7 +123,7 @@ public class TeleopV2 extends LinearOpMode {
                 SetPower(RTrigger1, -RTrigger1, -RTrigger1, RTrigger1);
             }
             //d pad fine tuned driving
-            double dpadSpeed = .63;
+            double dpadSpeed = .40; //.63
             if (dpadUp1) {
                 SetPower(-dpadSpeed, -dpadSpeed, -dpadSpeed, -dpadSpeed); //
             } else if (dpadRight1) {
@@ -192,23 +191,24 @@ public class TeleopV2 extends LinearOpMode {
             //update linear slide position
             RunSlide(CurrentLevel, 1, dpadUP2, dpadDOWN2);
 
-
-            if(a1 && a2 && b1){
-                slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            }
-
-            if(slide.getCurrentPosition() == 0 && limit.isPressed()){
+            if(slide.getCurrentPosition() < 1900 && limit.isPressed()){
                 slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
 
-            if(LStickY2 >= .05)
+            if(LStickY2 >= .05 && cap.getPosition() >= 0.259)
                 cap.setPosition(cap.getPosition() - .01);
-            else if(LStickY2 <= -0.5)
+            else if(LStickY2 <= -0.5 && cap.getPosition() <= 0.901) //26
                 cap.setPosition(cap.getPosition() + .01);
-            else if(RStickY2 >= .05)
-                cap.setPosition(cap.getPosition() - .025);
-            else if(RStickY2 <= -0.5)
-                cap.setPosition(cap.getPosition() + .025);
+            //Positions
+            else if(RStickY2 > 0.75)
+                cap.setPosition(0.26);
+            else if(RStickY2 < -0.75)
+                cap.setPosition(0.78);
+            //limits
+            else if(cap.getPosition() > 0.901)
+                cap.setPosition(.90);
+            else if (cap.getPosition() < 0.259)
+                cap.setPosition(0.26);
 
 
                 //telemetry/////////////////////////////////////////////////////////////////////////////
@@ -219,7 +219,7 @@ public class TeleopV2 extends LinearOpMode {
             telemetry.addData("Y", imu.getAngularVelocity().yRotationRate);
             telemetry.addData("Z", imu.getAngularVelocity().zRotationRate);
             telemetry.addData("D",distance.getDistance(cm));
-            telemetry.addData("Touch Sensor", limit.isPressed());
+            telemetry.addData("Cap", cap.getPosition());
             telemetry.update();
 
 

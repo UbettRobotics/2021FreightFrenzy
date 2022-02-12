@@ -4,10 +4,16 @@ import static org.firstinspires.ftc.teamcode.Robot.RunIntake;
 import static org.firstinspires.ftc.teamcode.Robot.RunSlide;
 import static org.firstinspires.ftc.teamcode.Robot.SetPower;
 import static org.firstinspires.ftc.teamcode.Robot.basket;
+import static org.firstinspires.ftc.teamcode.Robot.basketdefault;
+import static org.firstinspires.ftc.teamcode.Robot.cap;
+import static org.firstinspires.ftc.teamcode.Robot.capdefault;
+import static org.firstinspires.ftc.teamcode.Robot.cm;
+import static org.firstinspires.ftc.teamcode.Robot.distance;
 import static org.firstinspires.ftc.teamcode.Robot.imu;
 import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
 import static org.firstinspires.ftc.teamcode.Robot.initIMU;
 import static org.firstinspires.ftc.teamcode.Robot.initMotors;
+import static org.firstinspires.ftc.teamcode.Robot.limit;
 import static org.firstinspires.ftc.teamcode.Robot.slide;
 import static org.firstinspires.ftc.teamcode.Robot.tablemotor;
 
@@ -15,6 +21,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
@@ -31,22 +38,22 @@ public class TeleopV3 extends LinearOpMode {
 
         int CurrentLevel = 0;
         final int LEVEL0 = 0;
-        final int LEVEL1 = -800;
-        final int LEVEL2 = -1350;
-        final int LEVEL3 = -2050;
+        final int LEVEL1 = 450; //Unused
+        final int LEVEL2 = 1350;
+        final int LEVEL3 = 2050;
         Boolean tipped = false;
-
+        ElapsedTime elapsedTime;
         while(opModeIsActive()) {
             boolean LBumper1 = gamepad1.left_bumper;
             boolean RBumper1 = gamepad1.right_bumper;
 
             double LStickY = gamepad1.left_stick_y;
-            double LStickX  = -gamepad1.left_stick_x;
+            double LStickX = gamepad1.left_stick_x;
             double RStickY = -gamepad1.right_stick_y;
             double RStickX = -gamepad1.right_stick_x;
 
-            double LTrigger1 = -gamepad1.left_trigger;
-            double RTrigger1 = -gamepad1.right_trigger;
+            double LTrigger1 = gamepad1.left_trigger; //
+            double RTrigger1 = gamepad1.right_trigger; //
 
             boolean a1 = gamepad1.a;
             boolean b1 = gamepad1.b;
@@ -74,7 +81,7 @@ public class TeleopV3 extends LinearOpMode {
             boolean dpadLeft1 = gamepad1.dpad_left;
 
             boolean dpadUP2 = gamepad2.dpad_up;
-            boolean dpadDOWN2 =gamepad2.dpad_down;
+            boolean dpadDOWN2 = gamepad2.dpad_down;
             boolean dpadRight2 = gamepad2.dpad_right;
             boolean dpadLeft2 = gamepad2.dpad_left;
 
@@ -158,81 +165,90 @@ public class TeleopV3 extends LinearOpMode {
 
 
             //carousel
-            if (RBumper2){
+            if (RBumper2) {
                 tablemotor.setPower(1);
-            }
-            else if(LBumper2) {
+            } else if (LBumper2) {
                 tablemotor.setPower(-1);
-            }
-            else{
+            } else {
                 tablemotor.setPower(0);
             }
 
             //dump basket
-            if (y2) {
+            if (y2 && (CurrentLevel == LEVEL3 || CurrentLevel == LEVEL0 || CurrentLevel == LEVEL2)) {
                 basket.setPosition(.95);
                 tipped = true;
-            } else if (x2) { //shared
+            } else if (y2 && CurrentLevel == LEVEL1) { //shared
                 basket.setPosition(.99);
                 tipped = true;
-            } else if (b2){
+            } else if (b2) {
                 basket.setPosition(.80);
-            }else {
-                basket.setPosition(.5);
-                if(CurrentLevel == LEVEL0 ){
+            } else {
+                basket.setPosition(basketdefault);
+                if (CurrentLevel == LEVEL0) {
                     tipped = false;
-                }
-                else if(!slide.isBusy() && tipped == true){
-                    RunSlide(LEVEL1,1);
+                } else if (!slide.isBusy() && tipped == true) {
+                    RunSlide(LEVEL1, 1, dpadUP2, dpadDOWN2);
                     CurrentLevel = LEVEL0;
                     tipped = false;
                 }
             }
 
-            //linear slide is screwed up buttons
-
-
+            if (LTrigger1 > .05 || RTrigger1 > 0.5){
+                //elapsedTime = ElapsedTime();
+            }
             // intake motor
-            if (LTrigger2 > .05){
-                RunIntake(-1);
-            }
-            else if(RTrigger2 > .05) {
-                RunIntake(1);
-            }
-            else{
+            if (LTrigger2 > .05) {
+                RunIntake(.90);
+            } else if (RTrigger2 > .05) {
+                RunIntake(-.90);
+            } else {
                 RunIntake(0.0);
             }
 
             //linear slide
-            if(dpadUP2){
+            if (dpadUP2) {
                 CurrentLevel = LEVEL3;
-            }
-            else if(dpadLeft2){
+            } else if (dpadLeft2) {
                 CurrentLevel = LEVEL2;
-            }
-            else if(dpadDOWN2) {
+            } else if (dpadDOWN2) {
                 CurrentLevel = LEVEL0;
+            } else if (dpadRight2) {
+                CurrentLevel = LEVEL1;
             }else if(a1 && a2 && b1){
                 CurrentLevel = 5;
             }
             //update linear slide position
-            RunSlide(CurrentLevel, 1);
+            RunSlide(CurrentLevel, 1, dpadUP2, dpadDOWN2);
+
 
             if(a1 && a2 && b1){
                 slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
 
+            if(slide.getCurrentPosition() == 0 && limit.isPressed()){
+                slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+
+            if(LStickY2 >= .05)
+                cap.setPosition(cap.getPosition() - .01);
+            else if(LStickY2 <= -0.5)
+                cap.setPosition(cap.getPosition() + .01);
+            else if(RStickY2 >= .05)
+                cap.setPosition(cap.getPosition() - .025);
+            else if(RStickY2 <= -0.5)
+                cap.setPosition(cap.getPosition() + .025);
+
+
             //telemetry/////////////////////////////////////////////////////////////////////////////
-            /*
             telemetry.addData("ECV", slide.getCurrentPosition());
             telemetry.addData("Target",CurrentLevel);
             telemetry.addData("IMU", imu.getAngularOrientation());
             telemetry.addData("X", imu.getAngularVelocity().xRotationRate);
             telemetry.addData("Y", imu.getAngularVelocity().yRotationRate);
             telemetry.addData("Z", imu.getAngularVelocity().zRotationRate);
-
+            telemetry.addData("D",distance.getDistance(cm));
+            telemetry.addData("Touch Sensor", limit.isPressed());
             telemetry.update();
-             */
 
 
 
