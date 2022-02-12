@@ -6,6 +6,8 @@ import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
 import static org.firstinspires.ftc.teamcode.Robot.initMotors;
 import static org.firstinspires.ftc.teamcode.Robot.slide;
 import static org.firstinspires.ftc.teamcode.Robot.tablemotor;
+import static org.firstinspires.ftc.teamcode.Robot.cap;
+import static org.firstinspires.ftc.teamcode.Robot.capdefault;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -79,6 +81,7 @@ public class BlueRightStorage extends LinearOpMode{
         waitForStart();
         ////Move on start/init
         basket.setPosition(basketdefault);
+        cap.setPosition(capdefault);
         Path = RobotPath.BARRIER;
         ////
 

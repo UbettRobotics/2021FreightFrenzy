@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.Robot.RunIntake;
 import static org.firstinspires.ftc.teamcode.Robot.basket;
+import static org.firstinspires.ftc.teamcode.Robot.basketdefault;
+import static org.firstinspires.ftc.teamcode.Robot.cap;
+import static org.firstinspires.ftc.teamcode.Robot.capdefault;
 import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
 import static org.firstinspires.ftc.teamcode.Robot.initMotors;
 import static org.firstinspires.ftc.teamcode.Robot.slide;
@@ -69,7 +72,8 @@ public class BLUELeft extends LinearOpMode{
 
         waitForStart();
         ////Move on start/init
-        basket.setPosition(Robot.basketdefault);
+        basket.setPosition(basketdefault);
+        cap.setPosition(capdefault);
         ////
 
         switch(pipeline.getSide()) {

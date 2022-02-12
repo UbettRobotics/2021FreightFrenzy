@@ -30,6 +30,7 @@ public class TeleopV2 extends LinearOpMode {
         final int LEVEL3 = 2050;
         Boolean tipped = false;
         ElapsedTime elapsedTime;
+        cap.setPosition(capdefault);
         while(opModeIsActive()) {
             boolean LBumper1 = gamepad1.left_bumper;
             boolean RBumper1 = gamepad1.right_bumper;
@@ -100,9 +101,9 @@ public class TeleopV2 extends LinearOpMode {
             } else if (Math.abs(RTrigger1) > 0) {
                 SetPower(.25 * RTrigger1, -.25 * RTrigger1, .25 * RTrigger1, -.25 * RTrigger1); //.25
             } else if (LBumper1) {
-                SetPower(-.5 * 1, .5 * 1, -.5 * 1, .5 * 1);
+                SetPower(-.25 * 1, .25 * 1, -.25 * 1, .25 * 1);
             } else if (RBumper1) {
-                SetPower(.5 * 1, -.5 * 1, .5 * 1, -.5 * 1);
+                SetPower(.25 * 1, -.25 * 1, .25 * 1, -.25 * 1);
             } else {
                 SetPower(0, 0, 0, 0);
             }
@@ -200,7 +201,14 @@ public class TeleopV2 extends LinearOpMode {
                 slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
 
-
+            if(LStickY2 >= .05)
+                cap.setPosition(cap.getPosition() - .01);
+            else if(LStickY2 <= -0.5)
+                cap.setPosition(cap.getPosition() + .01);
+            else if(RStickY2 >= .05)
+                cap.setPosition(cap.getPosition() - .025);
+            else if(RStickY2 <= -0.5)
+                cap.setPosition(cap.getPosition() + .025);
 
 
                 //telemetry/////////////////////////////////////////////////////////////////////////////

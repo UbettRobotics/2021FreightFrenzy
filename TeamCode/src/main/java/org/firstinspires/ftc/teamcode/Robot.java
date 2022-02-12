@@ -23,6 +23,7 @@ public class Robot {
 
     //public final static double BLOCKER_OPEN = 0.25;
     public static double basketdefault = 0.51;
+    public static double capdefault = 0.25;
     final static double DEG90 = 22;//90 degree turn distance ()
 
     static DcMotor rightfront;
@@ -36,6 +37,7 @@ public class Robot {
     static DcMotor slide;
 
     static Servo basket;
+    static Servo cap;
     static BNO055IMU imu;
     static Orientation lastAngles = new Orientation();
     static DistanceSensor distance;
@@ -55,6 +57,7 @@ public class Robot {
         frontintake = opMode.hardwareMap.get(DcMotor.class, "frontintake");
         slide = opMode.hardwareMap.get(DcMotor.class,"slide");
         basket = opMode.hardwareMap.servo.get("basket");
+        cap = opMode.hardwareMap.servo.get("cap");
         distance = opMode.hardwareMap.get(DistanceSensor.class, "distance");
         limit = opMode.hardwareMap.get(TouchSensor.class, "limit");
 
