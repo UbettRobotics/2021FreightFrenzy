@@ -79,6 +79,7 @@ public class REDLeftGap extends LinearOpMode {
         waitForStart();
         ////Move on start/init
         basket.setPosition(basket_value);
+        cap.setPosition(capdefault);
         Path = RobotPath.GAP;
         ////
 

@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.Robot.basket;
+import static org.firstinspires.ftc.teamcode.Robot.cap;
+import static org.firstinspires.ftc.teamcode.Robot.capdefault;
 import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
 import static org.firstinspires.ftc.teamcode.Robot.initMotors;
 import static org.firstinspires.ftc.teamcode.Robot.tablemotor;
@@ -65,6 +67,7 @@ public class Forward extends LinearOpMode{
         waitForStart();
         ////Move on start/init
         basket.setPosition(0.48);
+        cap.setPosition(capdefault);
         ////
 
         telemetry.addData("No Camera", 1);
