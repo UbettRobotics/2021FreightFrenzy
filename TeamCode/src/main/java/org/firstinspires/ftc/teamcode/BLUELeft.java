@@ -96,26 +96,26 @@ public class BLUELeft extends LinearOpMode{
 
         double added = 0;
         if (level == 2) added = 1;
-        else if (level == 3) added = 5;
+        else if (level == 3) added = 6;
 
         Trajectory deliverPreload = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
                 .lineToLinearHeading(new Pose2d(14, 86 + added, Math.toRadians(-20)))
                 .build();
 
         Trajectory shippingToWall = drive.trajectoryBuilder(deliverPreload.end()) //moves bot from hub to wall
-                .lineToLinearHeading(new Pose2d(30, 36, Math.toRadians(114)))
+                .lineToLinearHeading(new Pose2d(25, 45, Math.toRadians(114)))
                 .build();
 
         Trajectory toWarehouse = drive.trajectoryBuilder(shippingToWall.end()) //moves bot from wall in to warehouse
-                .back(42)
+                .back(47)
                 .build();
 
         Trajectory warehouseToWall = drive.trajectoryBuilder(toWarehouse.end()) //moves bot from warehouse to wall
-                .forward(68)
+                .forward(65)
                 .build();
 
         Trajectory toHub = drive.trajectoryBuilder(warehouseToWall.end()) //moves bot from wall to hub
-                .lineToLinearHeading(new Pose2d(27, 91, Math.toRadians(-25)))
+                .lineToLinearHeading(new Pose2d(42, 80, Math.toRadians(-25)))
                 .build();
 
         // Deliver preload block
@@ -141,16 +141,16 @@ public class BLUELeft extends LinearOpMode{
         for(int i = 0; i < 1; i++) {
             //changes how far the robot goes foward to account for ball and block pushing
             Trajectory toWarehouseLong = drive.trajectoryBuilder(shippingToWall.end())
-                    .back(22 + (i * 5))
+                    .back(31 + (i * 5))
                     .build();
             //changes how far the robot goes back to account for ball and block pushing
             Trajectory warehouseToWallLong = drive.trajectoryBuilder(toWarehouse.end())
-                    .forward(40 + (i * 5))
+                    .forward(49 + (i * 5))
                     .build();
 
             //re-aligns the bot by pushing against the wall
             Trajectory align = drive.trajectoryBuilder(toWarehouseLong.end())
-                    .strafeLeft(9)
+                    .strafeLeft(15)
                     .build();
 
             // go to the wall from the shipping hub and begin intaking
@@ -185,11 +185,11 @@ public class BLUELeft extends LinearOpMode{
         }
 
         Trajectory toPark = drive.trajectoryBuilder(toHub.end())
-                .strafeRight(32)
+                .strafeRight(39)
                 .build();
         drive.followTrajectory(toPark);
         Trajectory Park = drive.trajectoryBuilder(toPark.end())
-                .forward(50)
+                .forward(40)
                 .build();
         drive.followTrajectory(Park);
 

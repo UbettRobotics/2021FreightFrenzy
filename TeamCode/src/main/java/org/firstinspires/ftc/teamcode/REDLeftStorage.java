@@ -110,10 +110,10 @@ public class REDLeftStorage extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-12,-57,Math.toRadians(-159)))//to -180
                 .build();
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-21))))
-                .lineTo(new Vector2d(-5, -20))
+                .lineTo(new Vector2d(-5, -16))
                 .build();
         Trajectory lineToWall = drive.trajectoryBuilder(toTurn.end())
-                .strafeRight(10)
+                .strafeRight(12)
                 .build();
         drive.followTrajectory(inchForward);
         drive.followTrajectory(toCarousel);
@@ -122,7 +122,7 @@ public class REDLeftStorage extends LinearOpMode {
         tablemotor.setPower(0);
 
         drive.followTrajectory(toTurn);
-        drive.turn(Math.toRadians(-70));
+        drive.turn(Math.toRadians(-75));
         drive.setPoseEstimate(drive.getPoseEstimate().plus(new Pose2d(0, 0, Math.toRadians(270))));
         drive.followTrajectory(lineToWall);
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom

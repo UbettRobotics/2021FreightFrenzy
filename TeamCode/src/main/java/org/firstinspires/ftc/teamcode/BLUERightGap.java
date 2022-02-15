@@ -108,14 +108,16 @@ public class BLUERightGap extends LinearOpMode{
                 .build();
 
         Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end()) //turn to carousel
-                .lineToLinearHeading(new Pose2d(-18, 65, Math.toRadians(-60)))//to -90
+                .lineToLinearHeading(new Pose2d(-15, 61, Math.toRadians(-60)))//to -90
                 .build();
 
 
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-35))), true) //To turn next to shipping hub
-                .lineToLinearHeading(new Pose2d(-67, 75,Math.toRadians(-163)))//to -180
+                .lineToLinearHeading(new Pose2d(-70, 75,Math.toRadians(-163)))//to -180
                 .build();
-
+        Trajectory alignAgainstWall = drive.trajectoryBuilder(toTurn.end())
+                .strafeRight(5)
+                .build();
 
 
         //drive sequence code
@@ -128,16 +130,16 @@ public class BLUERightGap extends LinearOpMode{
         tablemotor.setPower(0);
 
         drive.followTrajectory(toTurn);
+        drive.followTrajectory(alignAgainstWall);
 
-
-
-        Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
+        Pose2d end = alignAgainstWall.end();
+        Trajectory toShippingHub2Short = drive.trajectoryBuilder(end)//Bottom
+                .strafeLeft(26)
+                .build();
+        Trajectory toShippingHub2Middle = drive.trajectoryBuilder(end)//Middle
                 .strafeLeft(27)
                 .build();
-        Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
-                .strafeLeft(29)
-                .build();
-        Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
+        Trajectory toShippingHub2Long = drive.trajectoryBuilder(end)//Top
                 .strafeLeft(30.5)
                 .build();
 
@@ -187,7 +189,7 @@ public class BLUERightGap extends LinearOpMode{
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .forward(65)
+                    .forward(55)
                     .build();
 
             drive.followTrajectory(align);
@@ -196,7 +198,5 @@ public class BLUERightGap extends LinearOpMode{
 
         if (isStopRequested()) return;
         sleep(2000);
-
-
     }
 }

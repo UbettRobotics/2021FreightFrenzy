@@ -111,7 +111,7 @@ public class REDLeftGap extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-13,-57.5,Math.toRadians(-159)))//to -180
                 .build();
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-21))))
-                .splineToLinearHeading(new Pose2d(-71,-53,Math.toRadians(-40)),Math.toRadians(-135))//to 0
+                .splineToLinearHeading(new Pose2d(-76,-53,Math.toRadians(-40)),Math.toRadians(-135))//to 0
                 .build();
 
         drive.followTrajectory(inchForward);
@@ -157,32 +157,35 @@ public class REDLeftGap extends LinearOpMode {
 
         Trajectory align;
         Trajectory sprint;
-        if(Path == RobotPath.GAP) {
+        if(Path == REDLeftGap.RobotPath.GAP) {
             alignDistance = 35;
         } else {
-            alignDistance = 10;
+            alignDistance = 8;
         }
         if(level == 1 || level == 2) {
             align = drive.trajectoryBuilder(toShippingHub2Short.end())
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .back(60)
+                    .forward(80)
                     .build();
             drive.followTrajectory(align);
+            drive.turn(Math.toRadians(150));
             drive.followTrajectory(sprint);
         } else {
             align = drive.trajectoryBuilder(toShippingHub2Long.end())
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .back(60)
+                    .forward(80)
                     .build();
             drive.followTrajectory(align);
+            drive.turn(Math.toRadians(150));
             drive.followTrajectory(sprint);
         }
 
         if (isStopRequested()) return;
         sleep(2000);
+
     }
 }

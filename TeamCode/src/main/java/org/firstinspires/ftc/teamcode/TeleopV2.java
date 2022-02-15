@@ -30,6 +30,7 @@ public class TeleopV2 extends LinearOpMode {
         final int LEVEL3 = 2050;
         Boolean tipped = false;
         ElapsedTime elapsedTime;
+        boolean start = false;
         while(opModeIsActive()) {
             boolean LBumper1 = gamepad1.left_bumper;
             boolean RBumper1 = gamepad1.right_bumper;
@@ -71,6 +72,12 @@ public class TeleopV2 extends LinearOpMode {
             boolean dpadDOWN2 = gamepad2.dpad_down;
             boolean dpadRight2 = gamepad2.dpad_right;
             boolean dpadLeft2 = gamepad2.dpad_left;
+
+            boolean RStickIn1 = gamepad1.right_stick_button;
+            boolean LStickIn1 = gamepad1.left_stick_button;
+
+            boolean RStickIn2 = gamepad2.right_stick_button;
+            boolean LStickIn2 = gamepad2.left_stick_button;
 
             //diagonal driving
             if (Math.abs(LStickX) > 0 || Math.abs(LStickY) > 0 || Math.abs(RStickX) > 0) {
@@ -163,10 +170,6 @@ public class TeleopV2 extends LinearOpMode {
                     tipped = false;
                 }
             }
-
-            if (LTrigger1 > .05 || RTrigger1 > 0.5){
-                //elapsedTime = ElapsedTime();
-            }
             // intake motor
             if (LTrigger2 > .05) {
                 RunIntake(.90);
@@ -201,9 +204,11 @@ public class TeleopV2 extends LinearOpMode {
                 cap.setPosition(cap.getPosition() + .01);
             //Positions
             else if(RStickY2 > 0.75)
-                cap.setPosition(0.26);
+                cap.setPosition(0.43);
             else if(RStickY2 < -0.75)
                 cap.setPosition(0.78);
+            else if(LStickIn2)
+                cap.setPosition(0.26);
             //limits
             else if(cap.getPosition() > 0.901)
                 cap.setPosition(.90);

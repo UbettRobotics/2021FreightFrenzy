@@ -79,7 +79,7 @@ public class REDRight extends LinearOpMode{
             case LEFT_SIDE:
                 level = 1;
                 height = 0;
-                basket_value = 0.92;
+                basket_value = 0.93;
                 break;
             case MIDDLE_SIDE:
                 level = 2;
@@ -101,18 +101,18 @@ public class REDRight extends LinearOpMode{
                .build();
 
         Trajectory shippingToWall = drive.trajectoryBuilder(deliverPreload.end()) //moves to
-                .lineTo(new Vector2d(50, -65))
+                .lineTo(new Vector2d(60, -72))
                 .build();
 
         Trajectory toWarehouse = drive.trajectoryBuilder(shippingToWall.end())
-                .back(42)
+                .back(52)
                 .build();
 
         Trajectory warehouseToWall = drive.trajectoryBuilder(toWarehouse.end())
                 .forward(68)
                 .build();
         Trajectory toHub = drive.trajectoryBuilder(warehouseToWall.end())
-                .lineTo(new Vector2d(80, -41))
+                .lineTo(new Vector2d(90, -42))
                 .build();
 
 
@@ -138,11 +138,11 @@ public class REDRight extends LinearOpMode{
         for(int i = 0; i < 1; i++) {
             //changes how far the robot goes foward to account for ball and block pushing
             Trajectory toWarehouseLong = drive.trajectoryBuilder(shippingToWall.end())
-                    .back(50 + (i * 5))
+                    .back(65 + (i * 5))
                     .build();
             //changes how far the robot goes back to account for ball and block pushing
             Trajectory warehouseToWallLong = drive.trajectoryBuilder(toWarehouse.end())
-                    .forward(60 + (i * 5))
+                    .forward(58 + (i * 5))
                     .build();
             Trajectory align = drive.trajectoryBuilder(toWarehouseLong.end())
                     .strafeRight(11)
@@ -157,12 +157,12 @@ public class REDRight extends LinearOpMode{
 
             drive.followTrajectory(toWarehouseLong);
 
-            sleep(1000);
+            sleep(1200);
             drive.followTrajectory(align);
 
 
             // Go to shipping hub and deliver block
-            RunIntake(.90);
+            RunIntake(.92);
             slide.setTargetPosition(height);
             slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             slide.setPower(0.4);
@@ -170,8 +170,8 @@ public class REDRight extends LinearOpMode{
 
             drive.followTrajectory(warehouseToWallLong);
 
-            RunIntake(0);
             drive.followTrajectory(toHub);
+            RunIntake(0);
             while(slide.isBusy()){}
 
             basket.setPosition(basket_value);

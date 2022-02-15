@@ -149,7 +149,7 @@ public class BlueRightStorage extends LinearOpMode{
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(4)
+                .strafeLeft(7)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
                 .strafeLeft(8.5)
