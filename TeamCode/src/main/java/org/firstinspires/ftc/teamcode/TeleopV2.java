@@ -11,6 +11,8 @@ import static org.firstinspires.ftc.teamcode.Robot.RunSlide;
 import static org.firstinspires.ftc.teamcode.Robot.basket;
 import static org.firstinspires.ftc.teamcode.Robot.slide;
 import static org.firstinspires.ftc.teamcode.Robot.tablemotor;
+import static org.firstinspires.ftc.teamcode.Robot.redLED;
+import static org.firstinspires.ftc.teamcode.Robot.greenLED;
 
 @TeleOp(name = "teleopV2")
 public class TeleopV2 extends LinearOpMode {
@@ -25,12 +27,15 @@ public class TeleopV2 extends LinearOpMode {
 
         int CurrentLevel = 0;
         final int LEVEL0 = 0;
-        final int LEVEL1 = 450; //Unused
+        final int LEVEL1 = 450;
         final int LEVEL2 = 1350;
         final int LEVEL3 = 2050;
         Boolean tipped = false;
         ElapsedTime elapsedTime;
         boolean start = false;
+
+        //variable that tracks the amount of runs of the loop since it detected a block
+        int colorOnFor = 0;
         while(opModeIsActive()) {
             boolean LBumper1 = gamepad1.left_bumper;
             boolean RBumper1 = gamepad1.right_bumper;
@@ -89,7 +94,7 @@ public class TeleopV2 extends LinearOpMode {
                 } else {
 
                     double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-                    double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
+                    double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
                     double rightX = -gamepad1.right_stick_x;
 
                     double v1 = r * Math.cos(robotAngle) + rightX; //lf
@@ -151,6 +156,26 @@ public class TeleopV2 extends LinearOpMode {
                 tablemotor.setPower(0);
             }
 
+            //LED Indicator
+            if(colorSensor.red() + colorSensor.blue() + colorSensor.green() > 800) {
+                redLED.setState(false);
+                greenLED.setState(false);
+            } else {
+                redLED.setState(true);
+                greenLED.setState(true);
+            }
+            /*else if(colorSensor.red() + colorSensor.blue() + colorSensor.green() > 800){
+                if (colorOnFor < 25) {
+                    tablemotor.setPower(1);
+                    colorOnFor  += 1;
+                }else{
+                    tablemotor.setPower(0);
+                }
+            } else {
+                tablemotor.setPower(0);
+                colorOnFor = 0;
+            }
+            */
             //dump basket
             if (y2 && (CurrentLevel == LEVEL3 || CurrentLevel == LEVEL0 || CurrentLevel == LEVEL2)) {
                 basket.setPosition(.95);
@@ -194,7 +219,7 @@ public class TeleopV2 extends LinearOpMode {
             //update linear slide position
             RunSlide(CurrentLevel, 1, dpadUP2, dpadDOWN2);
 
-            if(slide.getCurrentPosition() < 1900 && limit.isPressed()){
+            if(slide.getCurrentPosition() < 1800 && limit.isPressed()){
                 slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
 
@@ -215,16 +240,13 @@ public class TeleopV2 extends LinearOpMode {
             else if (cap.getPosition() < 0.259)
                 cap.setPosition(0.26);
 
-
                 //telemetry/////////////////////////////////////////////////////////////////////////////
             telemetry.addData("ECV", slide.getCurrentPosition());
             telemetry.addData("Target",CurrentLevel);
-            telemetry.addData("IMU", imu.getAngularOrientation());
-            telemetry.addData("X", imu.getAngularVelocity().xRotationRate);
-            telemetry.addData("Y", imu.getAngularVelocity().yRotationRate);
-            telemetry.addData("Z", imu.getAngularVelocity().zRotationRate);
-            telemetry.addData("D",distance.getDistance(cm));
             telemetry.addData("Cap", cap.getPosition());
+            telemetry.addData("Red", colorSensor.red());
+            telemetry.addData("Green", colorSensor.green());
+            telemetry.addData("Blue", colorSensor.blue());
             telemetry.update();
 
 

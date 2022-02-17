@@ -7,8 +7,6 @@ import static org.firstinspires.ftc.teamcode.Robot.basket;
 import static org.firstinspires.ftc.teamcode.Robot.basketdefault;
 import static org.firstinspires.ftc.teamcode.Robot.cap;
 import static org.firstinspires.ftc.teamcode.Robot.capdefault;
-import static org.firstinspires.ftc.teamcode.Robot.cm;
-import static org.firstinspires.ftc.teamcode.Robot.distance;
 import static org.firstinspires.ftc.teamcode.Robot.imu;
 import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
 import static org.firstinspires.ftc.teamcode.Robot.initIMU;
@@ -246,7 +244,6 @@ public class TeleopV3 extends LinearOpMode {
             telemetry.addData("X", imu.getAngularVelocity().xRotationRate);
             telemetry.addData("Y", imu.getAngularVelocity().yRotationRate);
             telemetry.addData("Z", imu.getAngularVelocity().zRotationRate);
-            telemetry.addData("D",distance.getDistance(cm));
             telemetry.addData("Touch Sensor", limit.isPressed());
             telemetry.update();
 

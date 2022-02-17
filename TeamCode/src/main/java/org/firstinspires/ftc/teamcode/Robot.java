@@ -5,14 +5,17 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import com.qualcomm.robotcore.hardware.LED;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 public class Robot {
 
@@ -24,6 +27,7 @@ public class Robot {
     //public final static double BLOCKER_OPEN = 0.25;
     public static double basketdefault = 0.53;
     public static double capdefault = 0.26;
+    public static double color;
     final static double DEG90 = 22;//90 degree turn distance ()
 
     static DcMotor rightfront;
@@ -40,10 +44,12 @@ public class Robot {
     static Servo cap;
     static BNO055IMU imu;
     static Orientation lastAngles = new Orientation();
-    static DistanceSensor distance;
     static TouchSensor limit;
     static double globalAngle, correction;
-    static DistanceUnit cm = DistanceUnit.CM;
+    static ColorSensor colorSensor;
+
+    static DigitalChannel redLED;
+    static DigitalChannel greenLED;
 
 
 
@@ -58,8 +64,11 @@ public class Robot {
         slide = opMode.hardwareMap.get(DcMotor.class,"slide");
         basket = opMode.hardwareMap.servo.get("basket");
         cap = opMode.hardwareMap.servo.get("cap");
-        distance = opMode.hardwareMap.get(DistanceSensor.class, "distance");
         limit = opMode.hardwareMap.get(TouchSensor.class, "limit");
+        colorSensor = opMode.hardwareMap.get(ColorSensor.class, "Color");
+
+        redLED = opMode.hardwareMap.get(DigitalChannel.class, "red");
+        greenLED = opMode.hardwareMap.get(DigitalChannel.class, "green");
 
 
         rightfront.setDirection(DcMotor.Direction.REVERSE);
@@ -72,6 +81,9 @@ public class Robot {
         slide.setDirection(DcMotorSimple.Direction.FORWARD);
 
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        redLED.setMode(DigitalChannel.Mode.OUTPUT);
+        greenLED.setMode(DigitalChannel.Mode.OUTPUT);
 
         resetMotors();
     }
@@ -189,7 +201,7 @@ public class Robot {
         if(slide.getMode().compareTo(DcMotor.RunMode.RUN_WITHOUT_ENCODER)==0){
             // determine basket going up, down, or nothing
             int multiplier = 0;
-            if (up == true) multiplier = 1;
+            if (up == true) multiplier = 2;
             else if (down == true) multiplier = -1;
             slide.setPower(.35 * multiplier);
         }
