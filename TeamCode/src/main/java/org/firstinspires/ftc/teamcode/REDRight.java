@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.Robot.RunIntake;
 import static org.firstinspires.ftc.teamcode.Robot.basket;
+import static org.firstinspires.ftc.teamcode.Robot.colorSensor;
 import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
 import static org.firstinspires.ftc.teamcode.Robot.initMotors;
 import static org.firstinspires.ftc.teamcode.Robot.slide;
@@ -157,7 +158,7 @@ public class REDRight extends LinearOpMode{
 
             drive.followTrajectory(toWarehouseLong);
 
-            sleep(1200);
+            while(colorSensor.red() + colorSensor.blue() + colorSensor.green() < 800){}
             drive.followTrajectory(align);
 
 

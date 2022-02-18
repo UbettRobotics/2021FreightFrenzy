@@ -78,7 +78,7 @@ public class BLUERightBarrier extends LinearOpMode{
 
 ////////Program start////////////////////////////////////////////////////////////////////////
 
-        waitForStart();
+ waitForStart();
         ////Move on start/init
         basket.setPosition(Robot.basketdefault);
         cap.setPosition(capdefault);
@@ -109,12 +109,12 @@ public class BLUERightBarrier extends LinearOpMode{
                 .build();
 
         Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end()) //turn to carousel
-                .lineToLinearHeading(new Pose2d(-15, 61, Math.toRadians(-60)))//to -90
+                .lineToLinearHeading(new Pose2d(-15, 62, Math.toRadians(-60)))//to -90
                 .build();
 
 
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-35))), true) //To turn next to shipping hub
-                .lineToLinearHeading(new Pose2d(-70, 75,Math.toRadians(-163)))//to -180
+                .lineToLinearHeading(new Pose2d(-66, 75,Math.toRadians(-163)))//to -180
                 .build();
         Trajectory alignAgainstWall = drive.trajectoryBuilder(toTurn.end())
                 .strafeRight(5)
@@ -135,10 +135,10 @@ public class BLUERightBarrier extends LinearOpMode{
 
         Pose2d end = alignAgainstWall.end();
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(end)//Bottom
-                .strafeLeft(26)
+                .strafeLeft(27)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(end)//Middle
-                .strafeLeft(27)
+                .strafeLeft(27.5)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(end)//Top
                 .strafeLeft(30.5)

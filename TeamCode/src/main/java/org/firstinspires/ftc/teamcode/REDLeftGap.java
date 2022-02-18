@@ -167,20 +167,20 @@ public class REDLeftGap extends LinearOpMode {
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .forward(80)
+                    .back(50)
                     .build();
             drive.followTrajectory(align);
-            drive.turn(Math.toRadians(150));
+            //drive.turn(Math.toRadians(150));
             drive.followTrajectory(sprint);
         } else {
             align = drive.trajectoryBuilder(toShippingHub2Long.end())
                     .strafeRight(alignDistance)
                     .build();
             sprint = drive.trajectoryBuilder(align.end())
-                    .forward(80)
+                    .back(50)
                     .build();
             drive.followTrajectory(align);
-            drive.turn(Math.toRadians(150));
+            //drive.turn(Math.toRadians(150));
             drive.followTrajectory(sprint);
         }
 

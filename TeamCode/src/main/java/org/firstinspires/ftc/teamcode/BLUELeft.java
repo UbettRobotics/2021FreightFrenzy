@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.Robot.basket;
 import static org.firstinspires.ftc.teamcode.Robot.basketdefault;
 import static org.firstinspires.ftc.teamcode.Robot.cap;
 import static org.firstinspires.ftc.teamcode.Robot.capdefault;
+import static org.firstinspires.ftc.teamcode.Robot.colorSensor;
 import static org.firstinspires.ftc.teamcode.Robot.initAccessories;
 import static org.firstinspires.ftc.teamcode.Robot.initMotors;
 import static org.firstinspires.ftc.teamcode.Robot.slide;
@@ -80,7 +81,7 @@ public class BLUELeft extends LinearOpMode{
             case LEFT_SIDE:
                 level = 1;
                 height = 0;
-                basket_value = 0.95;
+                basket_value = 0.93;
                 break;
             case MIDDLE_SIDE:
                 level = 2;
@@ -103,7 +104,7 @@ public class BLUELeft extends LinearOpMode{
                 .build();
 
         Trajectory shippingToWall = drive.trajectoryBuilder(deliverPreload.end()) //moves bot from hub to wall
-                .lineToLinearHeading(new Pose2d(25, 45, Math.toRadians(114)))
+                .lineToLinearHeading(new Pose2d(25, 50, Math.toRadians(120)))
                 .build();
 
         Trajectory toWarehouse = drive.trajectoryBuilder(shippingToWall.end()) //moves bot from wall in to warehouse
@@ -115,7 +116,7 @@ public class BLUELeft extends LinearOpMode{
                 .build();
 
         Trajectory toHub = drive.trajectoryBuilder(warehouseToWall.end()) //moves bot from wall to hub
-                .lineToLinearHeading(new Pose2d(42, 80, Math.toRadians(-25)))
+                .lineToLinearHeading(new Pose2d(40, 98, Math.toRadians(-25)))
                 .build();
 
         // Deliver preload block
@@ -160,10 +161,23 @@ public class BLUELeft extends LinearOpMode{
 
 
             drive.followTrajectory(toWarehouseLong);
+            Trajectory shift = drive.trajectoryBuilder(toWarehouseLong.end())
+                    .back(10)
+                    .build();
+            Trajectory shiftout = drive.trajectoryBuilder(shift.end())
+                    .forward(10)
+                    .build();
 
-            sleep(1000);
-            drive.followTrajectory(align);
+            double time  = getRuntime();
+            while(colorSensor.red() + colorSensor.blue() + colorSensor.green() < 800 && opModeIsActive()){
+                /*if(getRuntime() + 10000 > time) {
+                    drive.followTrajectory(shift);
+                    drive.followTrajectory(shiftout);
+                }
+                 */
+            }
             RunIntake(.90);
+            drive.followTrajectory(align);
 
             drive.followTrajectory(warehouseToWallLong);
             slide.setTargetPosition(height);
