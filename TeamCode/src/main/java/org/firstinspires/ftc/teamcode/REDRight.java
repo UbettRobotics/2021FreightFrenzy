@@ -94,8 +94,8 @@ public class REDRight extends LinearOpMode{
 
         }
 
-        double added = 0;
-        if (level == 2) added = 1;
+        double added = 1;
+        if (level == 2) added = 1.5;
         else if (level == 3) added = 5.5;
         Trajectory deliverPreload = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
                .lineToLinearHeading(new Pose2d(67.5, -44 + added, Math.toRadians(-20)))
@@ -188,7 +188,7 @@ public class REDRight extends LinearOpMode{
                 .build();
         drive.followTrajectory(toPark);
         Trajectory Park = drive.trajectoryBuilder(toPark.end()) //moves to
-                .back(60)
+                .back(55)
                 .build();
         drive.followTrajectory(Park);
         if (isStopRequested()) return;

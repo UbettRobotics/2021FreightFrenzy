@@ -81,7 +81,7 @@ public class BLUELeft extends LinearOpMode{
             case LEFT_SIDE:
                 level = 1;
                 height = 0;
-                basket_value = 0.93;
+                basket_value = 0.92;
                 break;
             case MIDDLE_SIDE:
                 level = 2;
@@ -95,8 +95,8 @@ public class BLUELeft extends LinearOpMode{
 
         }
 
-        double added = 0;
-        if (level == 2) added = 1;
+        double added = 0.5;
+        if (level == 2) added = 2.25;
         else if (level == 3) added = 6;
 
         Trajectory deliverPreload = drive.trajectoryBuilder(startPose) //moves bot forward from start and turns
@@ -104,7 +104,7 @@ public class BLUELeft extends LinearOpMode{
                 .build();
 
         Trajectory shippingToWall = drive.trajectoryBuilder(deliverPreload.end()) //moves bot from hub to wall
-                .lineToLinearHeading(new Pose2d(25, 50, Math.toRadians(120)))
+                .lineToLinearHeading(new Pose2d(25, 45, Math.toRadians(120)))
                 .build();
 
         Trajectory toWarehouse = drive.trajectoryBuilder(shippingToWall.end()) //moves bot from wall in to warehouse
@@ -116,7 +116,7 @@ public class BLUELeft extends LinearOpMode{
                 .build();
 
         Trajectory toHub = drive.trajectoryBuilder(warehouseToWall.end()) //moves bot from wall to hub
-                .lineToLinearHeading(new Pose2d(40, 98, Math.toRadians(-25)))
+                .lineToLinearHeading(new Pose2d(22, 62, Math.toRadians(-25)))
                 .build();
 
         // Deliver preload block
@@ -164,7 +164,7 @@ public class BLUELeft extends LinearOpMode{
             Trajectory shift = drive.trajectoryBuilder(toWarehouseLong.end())
                     .back(10)
                     .build();
-            Trajectory shiftout = drive.trajectoryBuilder(shift.end())
+            Trajectory shiftout = drive.trajectoryBuilder(toWarehouseLong.end())
                     .forward(10)
                     .build();
 
@@ -176,7 +176,10 @@ public class BLUELeft extends LinearOpMode{
                 }
                  */
             }
+            RunIntake(0.90);
+            stop();
             RunIntake(.90);
+            drive.followTrajectory(shiftout);
             drive.followTrajectory(align);
 
             drive.followTrajectory(warehouseToWallLong);

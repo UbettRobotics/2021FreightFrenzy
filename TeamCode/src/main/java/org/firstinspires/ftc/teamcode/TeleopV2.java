@@ -224,9 +224,9 @@ public class TeleopV2 extends LinearOpMode {
             }
 
             if(LStickY2 >= .05 && cap.getPosition() >= 0.259)
-                cap.setPosition(cap.getPosition() - .01);
+                cap.setPosition(cap.getPosition() - .02);
             else if(LStickY2 <= -0.5 && cap.getPosition() <= 0.901) //26
-                cap.setPosition(cap.getPosition() + .01);
+                cap.setPosition(cap.getPosition() + .02);
             //Positions
             else if(RStickY2 > 0.75)
                 cap.setPosition(0.43);

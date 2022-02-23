@@ -109,22 +109,22 @@ public class BlueRightStorage extends LinearOpMode{
                 .build();
 
         Trajectory toCarousel = drive.trajectoryBuilder(inchForward.end()) //turn to carousel
-                .lineToLinearHeading(new Pose2d(-16, 61.5,Math.toRadians(-55)))//to -90
+                .lineToLinearHeading(new Pose2d(-16, 60.5,Math.toRadians(-55)))//to -90
                 .build();
 
 
         Trajectory toTurn = drive.trajectoryBuilder(toCarousel.end().plus(new Pose2d(0,0,Math.toRadians(-35))), true) //To turn next to shipping hub
-                .forward(29)
+                .forward(30)
                 .build();
 
         Trajectory toHub = drive.trajectoryBuilder(toTurn.end().plus(new Pose2d(0,0,Math.toRadians(-180))), true) //To turn next to shipping hub
-                .strafeLeft(30)
+                .strafeLeft(27.2)
                 .build();
         Trajectory park = drive.trajectoryBuilder(toHub.end()) //To turn next to shipping hub
                 .strafeRight(45)
                 .build();
         Trajectory fullPark = drive.trajectoryBuilder(park.end()) //To turn next to shipping hub
-                .forward(9)
+                .forward(11)
                 .build();
 
 
@@ -143,19 +143,19 @@ public class BlueRightStorage extends LinearOpMode{
         tablemotor.setPower(0);
 
         drive.followTrajectory(toTurn);
-        drive.turn(Math.toRadians(147));
+        drive.turn(Math.toRadians(143));
         drive.followTrajectory(toHub);
 
 
 
         Trajectory toShippingHub2Short = drive.trajectoryBuilder(toTurn.end())//Bottom
-                .strafeLeft(8)
+                .strafeLeft(9)
                 .build();
         Trajectory toShippingHub2Middle = drive.trajectoryBuilder(toTurn.end())//Middle
                 .strafeLeft(8.5)
                 .build();
         Trajectory toShippingHub2Long = drive.trajectoryBuilder(toTurn.end())//Top
-                .strafeLeft(11)
+                .strafeLeft(12)
                 .build();
 
         if(level == 1) {

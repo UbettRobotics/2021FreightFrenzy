@@ -170,7 +170,7 @@ public class REDLeftStorage extends LinearOpMode {
                 .strafeRight(40)
                 .build();
         Trajectory park = drive.trajectoryBuilder(align.end())
-                .back(9)
+                .back(11)
                 .build();
         drive.followTrajectory(align);
         drive.followTrajectory(park);
